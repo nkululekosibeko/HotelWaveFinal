@@ -13,6 +13,6 @@ namespace HotelWaveFinal.Models
 
         public int ServiceTypeId { get; set; }  // Here i am Creating Foreign Keys.
         [ForeignKey("ServiceTypeId")]
-        public ServiceType ServiceType { get; set; }  //This is a Navigation Property.
+        public ServiceType ServiceType { get; set; }  //This is a Navigation Property
     }
 }
