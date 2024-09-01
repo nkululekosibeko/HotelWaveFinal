@@ -22,9 +22,9 @@ namespace HotelWaveFinal.Models
             Canceled
         }
 
-        public int UserId { get; set; }  // Here i am Creating Foreign Keys.
-        [ForeignKey("UserId")]
-        public User User { get; set; }  //This is a Navigation Property.
+        //public int UserId { get; set; }  // Here i am Creating Foreign Keys.
+        //[ForeignKey("UserId")]
+        //public User User { get; set; }  //This is a Navigation Property.
 
         public int RoomId { get; set; }  // Here i am Creating Foreign Keys.
         [ForeignKey("RoomId")]

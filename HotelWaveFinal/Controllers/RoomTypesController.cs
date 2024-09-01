@@ -7,9 +7,11 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using HotelWaveFinal.DB;
 using HotelWaveFinal.Models;
+using Microsoft.AspNetCore.Authorization;
 
 namespace HotelWaveFinal.Controllers
 {
+    [Authorize(Roles = SD.Role_Admin)]
     public class RoomTypesController : Controller
     {
         private readonly ApplicationDBContext _context;
@@ -60,6 +62,7 @@ namespace HotelWaveFinal.Controllers
             {
                 _context.Add(roomType);
                 await _context.SaveChangesAsync();
+                TempData["success"] = "Room Type Created Successfully";
                 return RedirectToAction(nameof(Index));
             }
             return View(roomType);
@@ -99,6 +102,7 @@ namespace HotelWaveFinal.Controllers
                 {
                     _context.Update(roomType);
                     await _context.SaveChangesAsync();
+                    TempData["success"] = "Room Type Updated Successfully";
                 }
                 catch (DbUpdateConcurrencyException)
                 {
@@ -146,6 +150,7 @@ namespace HotelWaveFinal.Controllers
             }
 
             await _context.SaveChangesAsync();
+            TempData["success"] = "Room Type Deleted Successfully";
             return RedirectToAction(nameof(Index));
         }
 

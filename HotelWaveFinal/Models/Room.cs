@@ -1,4 +1,5 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using Microsoft.AspNetCore.Mvc.ModelBinding.Validation;
+using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
 namespace HotelWaveFinal.Models
@@ -14,6 +15,7 @@ namespace HotelWaveFinal.Models
 
         public int RoomTypeId { get; set; }  // Here i am Creating Foreign Keys.
         [ForeignKey("RoomTypeId")]
+        [ValidateNever]
         public RoomType RoomType { get; set; }  //This is a Navigation Property.
     }
 }
