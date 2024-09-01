@@ -1,0 +1,51 @@
+﻿@model HotelWaveFinal.Models.ServiceType
+
+@{
+    ViewData["Title"] = "Create";
+}
+
+<div class="card shadow border-0 mt-4">
+    <div class="card-header bg-info bg-gradient py-3">
+        <div class="row">
+            <div class="col-12 text-center">
+                <div class="text-white py-2">
+                    <h2>Create Service Type</h2>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="card-body p-4">
+        <h4>Service Type</h4>
+        <hr />
+        <form asp-action="Create">
+            <div asp-validation-summary="ModelOnly" class="text-danger mb-3"></div>
+            <div class="form-group mb-3">
+                <label asp-for="TypeName" class="form-label"></label>
+                <input asp-for="TypeName" class="form-control" />
+                <span asp-validation-for="TypeName" class="text-danger"></span>
+            </div>
+            <div class="form-group mb-3">
+                <label asp-for="Description" class="form-label"></label>
+                <input asp-for="Description" class="form-control" />
+                <span asp-validation-for="Description" class="text-danger"></span>
+            </div>
+            <div class="form-group mb-3">
+                <label asp-for="BasePrice" class="form-label"></label>
+                <input asp-for="BasePrice" class="form-control" />
+                <span asp-validation-for="BasePrice" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Create" class="btn btn-primary" />
+            </div>
+        </form>
+    </div>
+    <div class="card-footer text-end">
+        <a asp-action="Index" class="btn btn-secondary">Back to List</a>
+    </div>
+</div>
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+}

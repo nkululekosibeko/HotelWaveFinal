@@ -1,0 +1,45 @@
+﻿@model HotelWaveFinal.Models.ServiceType
+
+@{
+    ViewData["Title"] = "Details";
+}
+
+<div class="card shadow border-0 mt-4">
+    <div class="card-header bg-info bg-gradient py-3">
+        <div class="row">
+            <div class="col-12 text-center">
+                <div class="text-white py-2">
+                    <h2>Service Type Details</h2>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="card-body p-4">
+        <h4>Service Type</h4>
+        <hr />
+        <dl class="row">
+            <dt class="col-sm-2">
+                @Html.DisplayNameFor(model => model.TypeName)
+            </dt>
+            <dd class="col-sm-10">
+                @Html.DisplayFor(model => model.TypeName)
+            </dd>
+            <dt class="col-sm-2">
+                @Html.DisplayNameFor(model => model.Description)
+            </dt>
+            <dd class="col-sm-10">
+                @Html.DisplayFor(model => model.Description)
+            </dd>
+            <dt class="col-sm-2">
+                @Html.DisplayNameFor(model => model.BasePrice)
+            </dt>
+            <dd class="col-sm-10">
+                @Html.DisplayFor(model => model.BasePrice)
+            </dd>
+        </dl>
+    </div>
+    <div class="card-footer text-end">
+        <a asp-action="Edit" asp-route-id="@Model?.ServiceTypeId" class="btn btn-warning">Edit</a>
+        <a asp-action="Index" class="btn btn-secondary">Back to List</a>
+    </div>
+</div>
