@@ -3,44 +3,109 @@
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>@ViewData["Title"] - HotelWaveFinal</title>
+    <title>@ViewData["Title"] - Hotel Wave</title>
     <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.css" />
     <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
     <link rel="stylesheet" href="~/HotelWaveFinal.styles.css" asp-append-version="true" />
+    <style>
+        /* Make the navbar stationary (fixed at the top) */
+        .navbar-custom {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            z-index: 1000;
+            background-color: #fff; /* Ensure background color covers content underneath */
+            padding: 0.75rem 1rem;
+        }
+
+        /* Add padding to the top of the content so it doesn't hide behind the navbar */
+        body {
+            padding-top: 70px; /* Adjust this value based on the height of your navbar */
+        }
+
+        /* Style for the logo */
+        .navbar-logo {
+            width: 40px;
+            height: 40px;
+            margin-right: 10px;
+        }
+
+        /* Style for the navbar brand and logo */
+        .navbar-brand-custom {
+            display: flex;
+            align-items: center;
+        }
+
+        /* Style for the Sign Up and Sign In buttons */
+        .btn-custom {
+            margin-left: 10px;
+            padding: 0.5rem 1rem;
+            font-size: 1rem;
+        }
+
+        .btn-signup {
+            background-color: #28a745;
+            color: #fff;
+            border: none;
+        }
+
+        .btn-signin {
+            background-color: #007bff;
+            color: #fff;
+            border: none;
+        }
+
+            .btn-signup:hover, .btn-signin:hover {
+                opacity: 0.9;
+            }
+
+        .footer-custom {
+            margin-top: 2rem;
+        }
+    </style>
 </head>
 <body>
     <header>
-        <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-white border-bottom box-shadow mb-3">
+        <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-white border-bottom box-shadow navbar-custom">
             <div class="container-fluid">
-                <a class="navbar-brand" asp-area="" asp-controller="Home" asp-action="Index">HotelWaveFinal</a>
-                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target=".navbar-collapse" aria-controls="navbarSupportedContent"
+                <!-- Logo and Brand Title -->
+                <a class="navbar-brand navbar-brand-custom" asp-area="" asp-controller="Home" asp-action="Index">
+                    <img src="~/images/3.png" alt="Hotel Logo" class="navbar-logo"> <!-- Replace with actual logo path -->
+                    HotelWaveFinal
+                </a>
+
+                <!-- Toggler button for mobile view -->
+                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav"
                         aria-expanded="false" aria-label="Toggle navigation">
                     <span class="navbar-toggler-icon"></span>
                 </button>
-                <div class="navbar-collapse collapse d-sm-inline-flex justify-content-between">
-                    <ul class="navbar-nav flex-grow-1">
 
+                <!-- Navbar links and buttons -->
+                <div class="navbar-collapse collapse d-sm-inline-flex justify-content-between" id="navbarNav">
+                    <ul class="navbar-nav flex-grow-1">
                         <li class="nav-item">
                             <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Index">Home</a>
                         </li>
-
                         <li class="nav-item">
                             <a class="nav-link text-dark" asp-area="" asp-controller="Rooms" asp-action="Index">Rooms</a>
                         </li>
-
                         <li class="nav-item">
                             <a class="nav-link text-dark" asp-area="" asp-controller="RoomTypes" asp-action="Index">RoomTypes</a>
                         </li>
-
                         <li class="nav-item">
                             <a class="nav-link text-dark" asp-area="" asp-controller="Services" asp-action="Index">Services</a>
                         </li>
-
                         <li class="nav-item">
                             <a class="nav-link text-dark" asp-area="" asp-controller="ServiceTypes" asp-action="Index">ServiceTypes</a>
                         </li>
-
                     </ul>
+
+                    <!-- Sign Up and Sign In buttons -->
+                    <div class="d-flex">
+                        <a href="~/Account/Register" class="btn btn-custom btn-signup">Sign Up</a>
+                        <a href="~/Account/Login" class="btn btn-custom btn-signin">Sign In</a>
+                    </div>
                 </div>
             </div>
         </nav>
@@ -53,10 +118,10 @@
 
     <footer class="border-top footer text-muted">
         <div class="container">
-
             &copy; 2024 - Hotel Wave - <a asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
         </div>
     </footer>
+
     <script src="~/lib/jquery/dist/jquery.min.js"></script>
     <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
     <script src="~/js/site.js" asp-append-version="true"></script>
