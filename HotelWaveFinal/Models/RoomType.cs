@@ -8,6 +8,5 @@ namespace HotelWaveFinal.Models
         public int RoomTypeId { get; set; }
         public string TypeName { get; set; }
         public string Description { get; set; }
-        public double BasePrice { get; set; }
     }
 }

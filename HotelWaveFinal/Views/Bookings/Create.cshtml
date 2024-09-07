@@ -1,0 +1,102 @@
+﻿@model HotelWaveFinal.Models.Booking
+
+<div class="row justify-content-center mt-4">
+    <div class="col-md-6">
+        <!-- Card with border and shadow for the form -->
+        <div class="card border-primary shadow-lg">
+            <div class="card-header bg-primary text-white">
+                <h4 class="card-title mb-0">Booking Form</h4>
+            </div>
+            <div class="card-body">
+                <form asp-action="Create">
+                    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+
+                    <!-- Name field -->
+                    <div class="form-group">
+                        <label asp-for="Name" class="control-label"></label>
+                        <input asp-for="Name" class="form-control" placeholder="Enter your full name" />
+                        <span asp-validation-for="Name" class="text-danger"></span>
+                    </div>
+
+                    <!-- Phone number field -->
+                    <div class="form-group">
+                        <label asp-for="PhoneNumber" class="control-label"></label>
+                        <input asp-for="PhoneNumber" class="form-control" placeholder="Enter your phone number" />
+                        <span asp-validation-for="PhoneNumber" class="text-danger"></span>
+                    </div>
+
+                    <!-- Check-in date with date picker -->
+                    <div class="form-group">
+                        <label asp-for="CheckIn" class="control-label"></label>
+                        <input asp-for="CheckIn" type="date" class="form-control" min="@DateTime.Now.ToString("yyyy-MM-dd")" />
+                        <span asp-validation-for="CheckIn" class="text-danger"></span>
+                    </div>
+
+
+                    <!-- Check-out date with date picker -->
+                    <div class="form-group">
+                        <label asp-for="CheckOut" class="control-label"></label>
+                        <input asp-for="CheckOut" type="date" class="form-control" id="checkOutDate" min="@DateTime.Now.ToString("yyyy-MM-dd")" />
+                        <span asp-validation-for="CheckOut" class="text-danger"></span>
+                    </div>
+
+                    <!-- Number of Adults -->
+                    <div class="form-group">
+                        <label asp-for="NumberOfAdults" class="control-label"></label>
+                        <input asp-for="NumberOfAdults" class="form-control" type="number" min="1" max="10" placeholder="Enter number of adults" />
+                        <span asp-validation-for="NumberOfAdults" class="text-danger"></span>
+                    </div>
+
+                    <!-- Number of Children -->
+                    <div class="form-group">
+                        <label asp-for="NumberOfChildren" class="control-label"></label>
+                        <input asp-for="NumberOfChildren" class="form-control" type="number" min="0" max="10" placeholder="Enter number of children" />
+                        <span asp-validation-for="NumberOfChildren" class="text-danger"></span>
+                    </div>
+
+                    <!-- Room dropdown selector -->
+                    <div class="form-group">
+                        <label asp-for="RoomId" class="control-label"></label>
+                        <select asp-for="RoomId" class="form-control" asp-items="ViewBag.RoomId"></select>
+                        <span asp-validation-for="RoomId" class="text-danger"></span>
+                    </div>
+
+                    <!-- Status field -->
+                    @if (User.IsInRole("Admin"))
+                    {
+                        <div class="form-group">
+                            <label asp-for="Status" class="control-label"></label>
+                            <input asp-for="Status" class="form-control" />
+                            <span asp-validation-for="Status" class="text-danger"></span>
+                        </div>
+                    }
+                    else
+                    {
+                        <!-- For non-admins, status is a hidden field -->
+                        <input asp-for="Status" type="hidden" value="Pending" />
+                    }
+
+
+                    <!-- Submit button -->
+                    <div class="form-group text-center">
+                        <input type="submit" value="Create Booking" class="btn btn-primary btn-block" />
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+        <script type="text/javascript">
+            // Update the minimum checkout date when the check-in date is selected
+            document.getElementById("checkInDate").addEventListener("change", function () {
+                var checkInDate = document.getElementById("checkInDate").value;
+                document.getElementById("checkOutDate").setAttribute("min", checkInDate);
+            });
+        </script>
+    }
+}

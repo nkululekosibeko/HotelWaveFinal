@@ -22,7 +22,6 @@
                 <tr>
                     <th>@Html.DisplayNameFor(model => model.First().TypeName)</th>
                     <th>@Html.DisplayNameFor(model => model.First().Description)</th>
-                    <th>@Html.DisplayNameFor(model => model.First().BasePrice)</th>
                     <th>Actions</th>
                 </tr>
             </thead>
@@ -32,7 +31,6 @@
                     <tr>
                         <td>@Html.DisplayFor(modelItem => item.TypeName)</td>
                         <td>@Html.DisplayFor(modelItem => item.Description)</td>
-                        <td>@Html.DisplayFor(modelItem => item.BasePrice)</td>
                         <td>
                             <a asp-action="Edit" asp-route-id="@item.RoomTypeId" class="btn btn-warning btn-sm">
                                 Edit
