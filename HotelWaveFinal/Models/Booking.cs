@@ -18,12 +18,13 @@ namespace HotelWaveFinal.Models
         [ForeignKey("RoomId")]
         [ValidateNever]
         public Room Room { get; set; }  //This is a Navigation Property.
+
+        public string UserId { get; set; }
+
+        [ForeignKey("UserId")]
+        [ValidateNever]
+        public ApplicationUser User { get; set; }
         public string Status { get; set; } = "Pending";
 
-        //public string UserId { get; set; }
-
-        //[ForeignKey("UserId")]
-        //[ValidateNever]
-        //public ApplicationUser ApplicationUser { get; set; }  // Assuming ApplicationUser is your extended IdentityUser
     }
 }

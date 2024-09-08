@@ -1,0 +1,36 @@
+﻿@model IEnumerable<HotelWaveFinal.Models.Booking>
+
+<h2>My Bookings</h2>
+
+@if (!Model.Any())
+{
+    <p>You have no bookings yet.</p>
+}
+else
+{
+    <table class="table table-bordered table-striped">
+        <thead>
+            <tr>
+                <th>Room Number</th>
+                <th>Check-In Date</th>
+                <th>Check-Out Date</th>
+                <th>Status</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody id="bookingTableBody">
+            @foreach (var booking in Model)
+            {
+                <tr>
+                    <td>@booking.Room.RoomNumber</td>
+                    <td>@booking.CheckIn.ToString("yyyy-MM-dd")</td>
+                    <td>@booking.CheckOut.ToString("yyyy-MM-dd")</td>
+                    <td>@booking.Status</td>
+                    <td>
+                        <a href="@Url.Action("Details", "Bookings", new { id = booking.BookingId })" class="btn btn-info">Details</a>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}

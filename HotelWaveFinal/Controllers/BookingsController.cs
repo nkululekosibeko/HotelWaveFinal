@@ -8,6 +8,7 @@ using Microsoft.EntityFrameworkCore;
 using HotelWaveFinal.DB;
 using HotelWaveFinal.Models;
 using Microsoft.AspNetCore.Authorization;
+using System.Security.Claims;
 
 namespace HotelWaveFinal.Controllers
 {
@@ -55,37 +56,72 @@ namespace HotelWaveFinal.Controllers
             return View();
         }
 
-        // POST: Bookings/Create
-        // To protect from overposting attacks, enable the specific properties you want to bind to.
-        // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create([Bind("BookingId,Name,PhoneNumber,CheckIn,CheckOut,NumberOfAdults,NumberOfChildren,RoomId,Status")] Booking booking)
         {
-            //if (booking.CheckIn < DateTime.Today)
-            //{
-            //    ModelState.AddModelError("CheckIn", "Check-in date cannot be in the past.");
-            //}
+            // Get the current user ID
+            var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
 
-            // Ensure that CheckOut is after CheckIn
+            // Ensure the user ID is retrieved correctly
+            if (string.IsNullOrEmpty(userId))
+            {
+                // Handle the case where the user ID is not found
+                ModelState.AddModelError("UserId", "User ID could not be retrieved. Please log in again.");
+                return View(booking);
+            }
+
+            booking.UserId = userId;
+           
+
             if (booking.CheckOut <= booking.CheckIn)
             {
                 ModelState.AddModelError("CheckOut", "Check-out date must be later than check-in date.");
             }
-            if (!User.IsInRole("Admin"))
+
+            // Validate if the selected room is available for the given dates
+            var roomBooked = _context.Bookings
+                .Where(b => b.RoomId == booking.RoomId &&
+                            (b.CheckIn < booking.CheckOut && b.CheckOut > booking.CheckIn))
+                .Any();
+
+            if (roomBooked)
             {
-                booking.Status = "Pending";
+                ModelState.AddModelError("RoomId", "The selected room is already booked for the selected dates.");
             }
-            if (ModelState.IsValid)
+
+            if (!ModelState.IsValid)
             {
+                if (!User.IsInRole("Admin"))
+                {
+                    booking.Status = "Pending";
+                }
+
                 _context.Add(booking);
                 await _context.SaveChangesAsync();
                 TempData["success"] = "Booking Created Successfully";
-                return RedirectToAction(nameof(Index));
+                return RedirectToAction("Details", new { id = booking.BookingId });
             }
+
+            // Reload the RoomId select list if the model state is invalid
             ViewData["RoomId"] = new SelectList(_context.Rooms, "RoomId", "RoomId", booking.RoomId);
             return View(booking);
         }
+
+        [Authorize]
+        public async Task<IActionResult> MyBookings()
+        {
+            var userId = User.FindFirstValue(ClaimTypes.NameIdentifier); // Get the logged-in user's ID
+
+            // Get all bookings made by the current user
+            var userBookings = _context.Bookings
+                .Include(b => b.Room)
+                .Where(b => b.UserId == userId); // Filter by the logged-in user
+
+            return View(await userBookings.ToListAsync());
+        }
+
+
 
         // GET: Bookings/Edit/5
         [Authorize(Roles = SD.Role_Admin)]
