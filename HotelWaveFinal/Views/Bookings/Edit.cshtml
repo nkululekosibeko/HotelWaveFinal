@@ -1,69 +1,87 @@
 ﻿@model HotelWaveFinal.Models.Booking
 
-@{
-    ViewData["Title"] = "Edit";
-}
-
-<h1>Edit</h1>
-
-<h4>Booking</h4>
-<hr />
-<div class="row">
-    <div class="col-md-4">
+<div class="card shadow border-0 my-4">
+    <div class="card-header bg-secondary bg-gradient ml-0 py-3">
+        <div class="row">
+            <div class="col-12 text-center">
+                <h2 class="text-white py-2">Edit Booking</h2>
+            </div>
+        </div>
+    </div>
+    <div class="card-body p-4">
         <form asp-action="Edit">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <input type="hidden" asp-for="BookingId" />
-            <div class="form-group">
+
+            <!-- Name -->
+            <div class="form-group mb-3">
                 <label asp-for="Name" class="control-label"></label>
                 <input asp-for="Name" class="form-control" />
                 <span asp-validation-for="Name" class="text-danger"></span>
             </div>
-            <div class="form-group">
+
+            <!-- Phone number -->
+            <div class="form-group mb-3">
                 <label asp-for="PhoneNumber" class="control-label"></label>
                 <input asp-for="PhoneNumber" class="form-control" />
                 <span asp-validation-for="PhoneNumber" class="text-danger"></span>
             </div>
-            <div class="form-group">
+
+            <!-- Check-in date -->
+            <div class="form-group mb-3">
                 <label asp-for="CheckIn" class="control-label"></label>
                 <input asp-for="CheckIn" class="form-control" />
                 <span asp-validation-for="CheckIn" class="text-danger"></span>
             </div>
-            <div class="form-group">
+
+            <!-- Check-out date -->
+            <div class="form-group mb-3">
                 <label asp-for="CheckOut" class="control-label"></label>
                 <input asp-for="CheckOut" class="form-control" />
                 <span asp-validation-for="CheckOut" class="text-danger"></span>
             </div>
-            <div class="form-group">
+
+            <!-- Number of Adults -->
+            <div class="form-group mb-3">
                 <label asp-for="NumberOfAdults" class="control-label"></label>
                 <input asp-for="NumberOfAdults" class="form-control" />
                 <span asp-validation-for="NumberOfAdults" class="text-danger"></span>
             </div>
-            <div class="form-group">
+
+            <!-- Number of Children -->
+            <div class="form-group mb-3">
                 <label asp-for="NumberOfChildren" class="control-label"></label>
                 <input asp-for="NumberOfChildren" class="form-control" />
                 <span asp-validation-for="NumberOfChildren" class="text-danger"></span>
             </div>
-            <div class="form-group">
+
+            <!-- Room -->
+            <div class="form-group mb-3">
                 <label asp-for="RoomId" class="control-label"></label>
                 <select asp-for="RoomId" class="form-control" asp-items="ViewBag.RoomId"></select>
                 <span asp-validation-for="RoomId" class="text-danger"></span>
             </div>
-            <div class="form-group">
+
+            <!-- Status -->
+            <div class="form-group mb-3">
                 <label asp-for="Status" class="control-label"></label>
                 <input asp-for="Status" class="form-control" />
                 <span asp-validation-for="Status" class="text-danger"></span>
             </div>
-            <div class="form-group">
-                <input type="submit" value="Save" class="btn btn-primary" />
+            <!-- UserId Dropdown (if needed) -->
+            <div class="form-group mb-3">
+                <label asp-for="UserId" class="control-label"></label>
+                <select asp-for="UserId" class="form-control" asp-items="ViewBag.UserId"></select>
+                <span asp-validation-for="UserId" class="text-danger"></span>
+            </div>
+
+  @*               <input asp-for="UserId" type="hidden" /> *@
+
+            <!-- Submit and Back buttons -->
+            <div class="form-group text-center">
+                <input type="submit" value="Save" class="btn btn-primary mx-2" />
+                <a asp-action="Index" class="btn btn-secondary mx-2">Back to List</a>
             </div>
         </form>
     </div>
 </div>
-
-<div>
-    <a asp-action="Index">Back to List</a>
-</div>
-
-@section Scripts {
-    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
-}

@@ -1,66 +1,58 @@
 ﻿@model HotelWaveFinal.Models.Booking
 
-@{
-    ViewData["Title"] = "Details";
-}
+<div class="card shadow border-0 my-4">
+    <div class="card-header bg-secondary bg-gradient ml-0 py-3">
+        <div class="row">
+            <div class="col-12 text-center">
+                <h2 class="text-white py-2">Booking Details</h2>
+            </div>
+        </div>
+    </div>
+    <div class="card-body p-4">
+        <div class="row">
+            <div class="col-md-8 offset-md-2">
+                <dl class="row">
+                    <dt class="col-sm-4">@Html.DisplayNameFor(model => model.Name)</dt>
+                    <dd class="col-sm-8">@Html.DisplayFor(model => model.Name)</dd>
 
-<h1>Details</h1>
+                    <dt class="col-sm-4">@Html.DisplayNameFor(model => model.PhoneNumber)</dt>
+                    <dd class="col-sm-8">@Html.DisplayFor(model => model.PhoneNumber)</dd>
 
-<div>
-    <h4>Booking</h4>
-    <hr />
-    <dl class="row">
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Name)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Name)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.PhoneNumber)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.PhoneNumber)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.CheckIn)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.CheckIn)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.CheckOut)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.CheckOut)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.NumberOfAdults)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.NumberOfAdults)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.NumberOfChildren)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.NumberOfChildren)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Room)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Room.RoomId)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Status)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Status)
-        </dd>
-    </dl>
-</div>
-<div>
-    <a asp-action="Edit" asp-route-id="@Model?.BookingId">Edit</a> |
-    <a asp-action="Index">Back to List</a>
+                    <dt class="col-sm-4">@Html.DisplayNameFor(model => model.CheckIn)</dt>
+                    <dd class="col-sm-8">@Html.DisplayFor(model => model.CheckIn)</dd>
+
+                    <dt class="col-sm-4">@Html.DisplayNameFor(model => model.CheckOut)</dt>
+                    <dd class="col-sm-8">@Html.DisplayFor(model => model.CheckOut)</dd>
+
+                    <dt class="col-sm-4">@Html.DisplayNameFor(model => model.NumberOfAdults)</dt>
+                    <dd class="col-sm-8">@Html.DisplayFor(model => model.NumberOfAdults)</dd>
+
+                    <dt class="col-sm-4">@Html.DisplayNameFor(model => model.NumberOfChildren)</dt>
+                    <dd class="col-sm-8">@Html.DisplayFor(model => model.NumberOfChildren)</dd>
+
+                    <dt class="col-sm-4">@Html.DisplayNameFor(model => model.Room)</dt>
+                    <dd class="col-sm-8">@Html.DisplayFor(model => model.Room.RoomId)</dd>
+
+                    <dt class="col-sm-4">@Html.DisplayNameFor(model => model.Status)</dt>
+                    <dd class="col-sm-8">@Html.DisplayFor(model => model.Status)</dd>
+                </dl>
+
+                @if (User.IsInRole(SD.Role_Admin))
+                {
+                    <div class="text-center">
+                        <a asp-action="Edit" asp-route-id="@Model?.BookingId" class="btn btn-primary mx-2">
+                            <i class="bi bi-pencil"></i> Edit
+                        </a>
+                        <a asp-action="Index" class="btn btn-secondary mx-2">Back to List</a>
+                    </div>
+                }
+                else
+                {
+                    <div class="text-center">
+                        <a asp-area="" asp-controller="Home" asp-action="Index" class="btn btn-secondary mx-2">Go Back Home</a>
+                    </div>
+                }
+            </div>
+        </div>
+    </div>
 </div>

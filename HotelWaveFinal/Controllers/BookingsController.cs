@@ -61,6 +61,7 @@ namespace HotelWaveFinal.Controllers
         public async Task<IActionResult> Create([Bind("BookingId,Name,PhoneNumber,CheckIn,CheckOut,NumberOfAdults,NumberOfChildren,RoomId,Status")] Booking booking)
         {
             // Get the current user ID
+            
             var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
 
             // Ensure the user ID is retrieved correctly
@@ -137,33 +138,47 @@ namespace HotelWaveFinal.Controllers
             {
                 return NotFound();
             }
+
+            // Optional: Populate dropdown for UserId if needed
+            ViewData["UserId"] = new SelectList(await _context.Users.ToListAsync(), "Id", "UserName", booking.UserId);
+
             ViewData["RoomId"] = new SelectList(_context.Rooms, "RoomId", "RoomId", booking.RoomId);
             return View(booking);
         }
 
         // POST: Bookings/Edit/5
-        // To protect from overposting attacks, enable the specific properties you want to bind to.
-        // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("BookingId,Name,PhoneNumber,CheckIn,CheckOut,NumberOfAdults,NumberOfChildren,RoomId,Status")] Booking booking)
+        public async Task<IActionResult> Edit(int id, [Bind("BookingId,Name,PhoneNumber,CheckIn,CheckOut,NumberOfAdults,NumberOfChildren,RoomId,Status")] Booking updatedBooking)
         {
-            if (id != booking.BookingId)
+            if (id != updatedBooking.BookingId)
             {
                 return NotFound();
             }
 
-            if (ModelState.IsValid)
+            if (!ModelState.IsValid)
             {
                 try
                 {
-                    _context.Update(booking);
+                    // Retrieve the existing booking to preserve original UserId
+                    var existingBooking = await _context.Bookings.FindAsync(id);
+                    if (existingBooking == null)
+                    {
+                        return NotFound();
+                    }
+
+                    // Preserve the original UserId
+                    updatedBooking.UserId = existingBooking.UserId;
+
+                    _context.Entry(existingBooking).CurrentValues.SetValues(updatedBooking);
                     await _context.SaveChangesAsync();
+
                     TempData["success"] = "Booking updated Successfully";
+                    return RedirectToAction(nameof(Index));
                 }
                 catch (DbUpdateConcurrencyException)
                 {
-                    if (!BookingExists(booking.BookingId))
+                    if (!BookingExists(updatedBooking.BookingId))
                     {
                         return NotFound();
                     }
@@ -172,11 +187,15 @@ namespace HotelWaveFinal.Controllers
                         throw;
                     }
                 }
-                return RedirectToAction(nameof(Index));
             }
-            ViewData["RoomId"] = new SelectList(_context.Rooms, "RoomId", "RoomId", booking.RoomId);
-            return View(booking);
+
+            // If model state is not valid, return to the view with validation errors
+            ViewData["RoomId"] = new SelectList(_context.Rooms, "RoomId", "RoomId", updatedBooking.RoomId);
+            ViewData["UserId"] = new SelectList(await _context.Users.ToListAsync(), "Id", "UserName", updatedBooking.UserId);
+            return View(updatedBooking);
         }
+
+
 
         // GET: Bookings/Delete/5
         [Authorize(Roles = SD.Role_Admin)]
