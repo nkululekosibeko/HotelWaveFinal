@@ -28,8 +28,8 @@
 
         /* Style for the logo */
         .navbar-logo {
-            width: 40px;
-            height: 40px;
+            width: 45px;
+            height: 45px;
             margin-right: 10px;
         }
 
@@ -68,59 +68,57 @@
     </style>
 </head>
 <body>
+    
     <header>
-        <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-white border-bottom box-shadow navbar-custom">
-            <div class="container-fluid">
-                <!-- Logo and Brand Title -->
-                <a class="navbar-brand navbar-brand-custom" asp-area="" asp-controller="Home" asp-action="Index">
-                    <img src="~/images/3.png" alt="Hotel Logo" class="navbar-logo"> <!-- Replace with actual logo path -->
-                    Hotel Wave Tech
-                </a>
+            <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-white border-bottom box-shadow navbar-custom">
+                <div class="container-fluid">
+                    <!-- Logo and Brand Title -->
+                    <a class="navbar-brand navbar-brand-custom" asp-area="" asp-controller="Home" asp-action="Index">
+                        <img src="~/images/3.png" alt="Hotel Logo" class="navbar-logo"> <!-- Replace with actual logo path -->
+                        Hotel Wave Tech
+                    </a>
 
-                <!-- Toggler button for mobile view -->
-                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav"
-                        aria-expanded="false" aria-label="Toggle navigation">
-                    <span class="navbar-toggler-icon"></span>
-                </button>
+                    <!-- Toggler button for mobile view -->
+                    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav"
+                            aria-expanded="false" aria-label="Toggle navigation">
+                        <span class="navbar-toggler-icon"></span>
+                    </button>
 
-                <!-- Navbar links and buttons -->
-                <div class="navbar-collapse collapse d-sm-inline-flex justify-content-between" id="navbarNav">
-                    <ul class="navbar-nav flex-grow-1">
-                        @if (User.IsInRole(SD.Role_Admin))
-                        {
-                            
-                        <li class="nav-item dropdown ">
-                            <a class="nav-link dropdown-toggle text-dark" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                                Hotel Management
-                            </a>
-                            <ul class="dropdown-menu">
-                                <li class="nav-item">
-                                    <a class="nav-link text-dark" asp-area="" asp-controller="Rooms" asp-action="Index">Rooms</a>
+                    <!-- Navbar links and buttons -->
+                    <div class="navbar-collapse collapse d-sm-inline-flex justify-content-between" id="navbarNav">
+                        <ul class="navbar-nav flex-grow-1">
+                            @if (User.IsInRole(SD.Role_Admin))
+                            {
+                                <li class="nav-item dropdown">
+                                    <a class="nav-link dropdown-toggle text-dark" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                        Hotel Management
+                                    </a>
+                                    <ul class="dropdown-menu">
+                                        <li class="nav-item">
+                                            <a class="nav-link text-dark" asp-area="" asp-controller="Rooms" asp-action="Index">Rooms</a>
+                                        </li>
+                                        <li class="nav-item">
+                                            <a class="nav-link text-dark" asp-area="" asp-controller="RoomTypes" asp-action="Index">RoomTypes</a>
+                                        </li>
+                                        <li class="nav-item">
+                                            <a class="nav-link text-dark" asp-area="" asp-controller="Services" asp-action="Index">Services</a>
+                                        </li>
+                                        <li class="nav-item">
+                                            <a class="nav-link text-dark" asp-area="" asp-controller="ServiceTypes" asp-action="Index">ServiceTypes</a>
+                                        </li>
+                                    </ul>
                                 </li>
-                                <li class="nav-item">
-                                    <a class="nav-link text-dark" asp-area="" asp-controller="RoomTypes" asp-action="Index">RoomTypes</a>
-                                </li>
-                                <li class="nav-item">
-                                    <a class="nav-link text-dark" asp-area="" asp-controller="Services" asp-action="Index">Services</a>
-                                </li>
-                                <li class="nav-item">
-                                    <a class="nav-link text-dark" asp-area="" asp-controller="ServiceTypes" asp-action="Index">ServiceTypes</a>
-                                </li>
-                            </ul>
-                        </li>
-                        }
-                    </ul>
+                            }
+                        </ul>
 
-                    <!-- Sign Up and Sign In buttons -->
-@*                     <div class="d-flex">
-                        <a href="~/Account/Register" class="btn btn-custom btn-signup">Sign Up</a>
-                        <a href="~/Account/Login" class="btn btn-custom btn-signin">Sign In</a>
-                    </div> *@
-                    <partial name="_LoginPartial" />
+                        <!-- Sign Up and Sign In buttons -->
+                        <partial name="_LoginPartial" />
+                    </div>
                 </div>
-            </div>
-        </nav>
-    </header>
+            </nav>
+        </header>
+
+
     <div class="container">
         <main role="main" class="pb-3">
             <partial name="_NotificationPartial" />
@@ -128,11 +126,102 @@
         </main>
     </div>
 
-    <footer class="border-top footer text-muted">
+    <style>
+
+        .footer-custom {
+            background-color: #343a40; /* Dark background for elegance */
+            padding: 40px 0;
+        }
+
+        .footer-title {
+            font-size: 1.2rem;
+            font-weight: bold;
+            margin-bottom: 1rem;
+            color: #f8f9fa;
+        }
+
+        .footer-link {
+            color: #adb5bd;
+            text-decoration: none;
+        }
+
+            .footer-link:hover {
+                color: #ffffff;
+                text-decoration: underline;
+            }
+
+        .social-icons {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 1rem;
+        }
+
+        .social-icon i {
+            font-size: 1.5rem;
+            color: #f8f9fa;
+            transition: color 0.3s;
+        }
+
+            .social-icon i:hover {
+                color: #ffc107; /* Hover effect for icons */
+            }
+
+        .newsletter-form input {
+            border-radius: 0;
+            border: none;
+            padding: 10px;
+            margin-bottom: 10px;
+        }
+
+        .newsletter-form button {
+            border-radius: 0;
+        }
+
+        .footer-bottom {
+            border-top: 1px solid #495057;
+            padding-top: 20px;
+            color: #adb5bd;
+            font-size: 0.9rem;
+        }
+    </style>
+
+    <footer class="footer-custom text-light">
         <div class="container">
-            &copy; 2024 - Hotel Wave - <a asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
+            <div class="row">
+                <!-- Hotel Info and Contact -->
+                <div class="col-md-4">
+                    <h5 class="footer-title">Hotel Wave Tech</h5>
+                    <p>123 Ocean Drive, Wave City</p>
+                    <p>Email: info@hotelwavetech.com</p>
+                    <p>Phone: +1 (555) 123-4567</p>
+                </div>
+
+                
+
+                <!-- Social Media and Newsletter -->
+                <div class="col-md-4">
+                    <h5 class="footer-title">Stay Connected</h5>
+                    <div class="social-icons">
+                        <a href="#" class="social-icon"><i class="fab fa-facebook-f"></i></a>
+                        <a href="#" class="social-icon"><i class="fab fa-twitter"></i></a>
+                        <a href="#" class="social-icon"><i class="fab fa-instagram"></i></a>
+                        <a href="#" class="social-icon"><i class="fab fa-linkedin"></i></a>
+                    </div>
+                    <p>Subscribe to our newsletter for the latest updates and offers:</p>
+                    <form class="newsletter-form">
+                        <input type="email" class="form-control" placeholder="Enter your email" aria-label="Email">
+                        <button type="submit" class="btn btn-primary mt-2">Subscribe</button>
+                    </form>
+                </div>
+            </div>
+            <div class="footer-bottom text-center mt-4">
+                <p>&copy; 2024 - Hotel Wave Tech. All rights reserved.</p>
+            </div>
         </div>
     </footer>
+
+
+
 
     <script src="~/lib/jquery/dist/jquery.min.js"></script>
     <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
