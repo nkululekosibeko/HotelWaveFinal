@@ -61,7 +61,12 @@ namespace HotelWaveFinal.Controllers
         public async Task<IActionResult> Create([Bind("BookingId,Name,PhoneNumber,CheckIn,CheckOut,NumberOfAdults,NumberOfChildren,RoomId,Status")] Booking booking)
         {
             // Get the current user ID
-            
+
+            if (booking.CheckOut <= booking.CheckIn)
+            {
+                ModelState.AddModelError("CheckOut", "Check-out date must be later than check-in date.");
+            }
+
             var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
 
             // Ensure the user ID is retrieved correctly
@@ -75,10 +80,6 @@ namespace HotelWaveFinal.Controllers
             booking.UserId = userId;
            
 
-            if (booking.CheckOut <= booking.CheckIn)
-            {
-                ModelState.AddModelError("CheckOut", "Check-out date must be later than check-in date.");
-            }
 
             // Validate if the selected room is available for the given dates
             var roomBooked = _context.Bookings
