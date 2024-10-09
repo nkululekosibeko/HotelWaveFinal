@@ -4,52 +4,75 @@
     ViewData["Title"] = "Delete Service";
 }
 
-<div class="card shadow border-0 mt-4">
-    <div class="card-header bg-danger bg-gradient py-3">
-        <div class="row">
-            <div class="col-12 text-center">
-                <div class="text-white py-2">
-                    <h2>Delete Service</h2>
+<div class="container my-5" style="position: relative; padding: 60px 0;">
+    <img src="~/assets/royal-master/image/about_banner.jpg" alt="Background" class="background-image" style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; object-fit: cover; z-index: -1;"> <!-- Background image -->
+    <div class="overlay"></div> <!-- Overlay for dark navy color -->
+    <div class="card shadow border-0 mx-auto" style="width: 45%; border-radius: 10px; box-shadow: 0 4px 20px rgba(0, 0, 0, 0.5);">
+        <!-- Added border radius and shadow -->
+        <div class="card-header bg-danger bg-gradient py-3">
+            <div class="row">
+                <div class="col-12 text-center">
+                    <div class="text-white py-2">
+                        <h2>Delete Service</h2>
+                    </div>
                 </div>
             </div>
         </div>
-    </div>
-    <div class="card-body p-4">
-        <h3>Are you sure you want to delete this?</h3>
-        <h4>Service</h4>
-        <hr />
-        <dl class="row">
-            <dt class="col-sm-2">
-                @Html.DisplayNameFor(model => model.ServiceName)
-            </dt>
-            <dd class="col-sm-10">
-                @Html.DisplayFor(model => model.ServiceName)
-            </dd>
-            <dt class="col-sm-2">
-                @Html.DisplayNameFor(model => model.Description)
-            </dt>
-            <dd class="col-sm-10">
-                @Html.DisplayFor(model => model.Description)
-            </dd>
-            <dt class="col-sm-2">
-                @Html.DisplayNameFor(model => model.TotalCost)
-            </dt>
-            <dd class="col-sm-10">
-                @Html.DisplayFor(model => model.TotalCost)
-            </dd>
-            <dt class="col-sm-2">
-                @Html.DisplayNameFor(model => model.ServiceType)
-            </dt>
-            <dd class="col-sm-10">
-                @Html.DisplayFor(model => model.ServiceType.ServiceTypeId)
-            </dd>
-        </dl>
-        <form asp-action="Delete">
-            <input type="hidden" asp-for="ServiceId" />
-            <div class="form-group mt-3">
-                <input type="submit" value="Delete" class="btn btn-danger" />
-                <a asp-action="Index" class="btn btn-secondary ml-2">Back to List</a>
-            </div>
-        </form>
+        <div class="card-body p-4">
+            <h3>Are you sure you want to delete this?</h3>
+            <h4>Service</h4>
+            <hr />
+            <dl class="row">
+                <dt class="col-sm-2">
+                    @Html.DisplayNameFor(model => model.ServiceName)
+                </dt>
+                <dd class="col-sm-10">
+                    @Html.DisplayFor(model => model.ServiceName)
+                </dd>
+                <dt class="col-sm-2">
+                    @Html.DisplayNameFor(model => model.Description)
+                </dt>
+                <dd class="col-sm-10">
+                    @Html.DisplayFor(model => model.Description)
+                </dd>
+                <dt class="col-sm-2">
+                    @Html.DisplayNameFor(model => model.TotalCost)
+                </dt>
+                <dd class="col-sm-10">
+                    @Html.DisplayFor(model => model.TotalCost)
+                </dd>
+                <dt class="col-sm-2">
+                    @Html.DisplayNameFor(model => model.ServiceType)
+                </dt>
+                <dd class="col-sm-10">
+                    @Html.DisplayFor(model => model.ServiceType.ServiceTypeId)
+                </dd>
+            </dl>
+            <form asp-action="Delete">
+                <input type="hidden" asp-for="ServiceId" />
+                <div class="form-group mt-3 text-center">
+                    <input type="submit" value="Delete" class="btn btn-danger" />
+                    <a asp-action="Index" class="btn btn-secondary ml-2">Back to List</a>
+                </div>
+            </form>
+        </div>
     </div>
 </div>
+
+<style>
+    /* Overlay styles */
+    .overlay {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background-color: rgba(255, 165, 0, 0.1); /* Dark orange with 30% transparency */
+        z-index: 0; /* Below the content but above the background image */
+    }
+
+    /* Ensure the image is behind the overlay */
+    .background-image {
+        z-index: -1; /* Set background image behind everything else */
+    }
+</style>

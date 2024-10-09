@@ -4,43 +4,63 @@
     ViewData["Title"] = "Create Room Type";
 }
 
-<div class="card shadow border-0 mt-4">
-    <div class="card-header bg-info bg-gradient py-3">
-        <div class="row">
-            <div class="col-12 text-center">
-                <div class="text-white py-2">
-                    <h2>Create Room Type</h2>
+<div class="container my-5" style="position: relative; padding: 60px 0;">
+    <img src="~/assets/royal-master/image/about_banner.jpg" alt="Background" class="background-image" style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; object-fit: cover; z-index: -1;"> <!-- Background image -->
+    <div class="overlay"></div> <!-- Overlay for dark navy color -->
+    <div class="card shadow border-0 mx-auto" style="width: 45%; border-radius: 10px; box-shadow: 0 4px 20px rgba(0, 0, 0, 0.5);">
+        <!-- Added border radius and shadow -->
+        <div class="card-header bg-info bg-gradient py-3">
+            <div class="row">
+                <div class="col-12 text-center">
+                    <div class="text-white py-2">
+                        <h2>Create Room Type</h2>
+                    </div>
                 </div>
             </div>
         </div>
-    </div>
-    <div class="card-body p-4">
-        <form asp-action="Create">
-            <div asp-validation-summary="ModelOnly" class="text-danger mb-3"></div>
+        <div class="card-body p-4">
+            <form asp-action="Create">
+                <div asp-validation-summary="ModelOnly" class="text-danger mb-3"></div>
 
-            <div class="form-group mb-3">
-                <label asp-for="TypeName" class="form-label"></label>
-                <input asp-for="TypeName" class="form-control" />
-                <span asp-validation-for="TypeName" class="text-danger"></span>
-            </div>
+                <div class="form-group mb-3">
+                    <label asp-for="TypeName" class="form-label"></label>
+                    <input asp-for="TypeName" class="form-control" />
+                    <span asp-validation-for="TypeName" class="text-danger"></span>
+                </div>
 
-            <div class="form-group mb-3">
-                <label asp-for="Description" class="form-label"></label>
-                <input asp-for="Description" class="form-control" />
-                <span asp-validation-for="Description" class="text-danger"></span>
-            </div>
+                <div class="form-group mb-3">
+                    <label asp-for="Description" class="form-label"></label>
+                    <input asp-for="Description" class="form-control" />
+                    <span asp-validation-for="Description" class="text-danger"></span>
+                </div>
 
-
-            <div class="text-center">
-                <input type="submit" value="Create" class="btn btn-primary me-2" />
-                <a asp-action="Index" class="btn btn-secondary">Back to List</a>
-            </div>
-        </form>
+                <div class="text-center">
+                    <input type="submit" value="Create" class="btn btn-primary me-2" />
+                    <a asp-action="Index" class="btn btn-secondary">Back to List</a>
+                </div>
+            </form>
+        </div>
     </div>
 </div>
 
-@section Scripts {
-    @{
-        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+<style>
+    /* Overlay styles */
+    .overlay {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background-color: rgba(255, 165, 0, 0.1); /* Dark orange with 30% transparency */
+        z-index: 0; /* Below the content but above the background image */
     }
+
+    /* Ensure the image is behind the overlay */
+    .background-image {
+        z-index: -1; /* Set background image behind everything else */
+    }
+</style>
+
+@section Scripts {
+    @await Html.PartialAsync("_ValidationScriptsPartial")
 }

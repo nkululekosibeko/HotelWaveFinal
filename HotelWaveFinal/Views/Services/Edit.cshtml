@@ -4,54 +4,75 @@
     ViewData["Title"] = "Edit Service";
 }
 
-<div class="card shadow border-0 mt-4">
-    <div class="card-header bg-info bg-gradient py-3">
-        <div class="row">
-            <div class="col-12 text-center">
-                <div class="text-white py-2">
-                    <h2>Edit Service</h2>
+<div class="container my-5" style="position: relative; padding: 60px 0;">
+    <img src="~/assets/royal-master/image/about_banner.jpg" alt="Background" class="background-image" style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; object-fit: cover; z-index: -1;"> <!-- Background image -->
+    <div class="overlay"></div> <!-- Overlay for dark navy color -->
+    <div class="card shadow border-0 mx-auto" style="width: 45%; border-radius: 10px; box-shadow: 0 4px 20px rgba(0, 0, 0, 0.5);">
+        <!-- Added border radius and shadow -->
+        <div class="card-header bg-info bg-gradient py-3">
+            <div class="row">
+                <div class="col-12 text-center">
+                    <div class="text-white py-2">
+                        <h2>Edit Service</h2>
+                    </div>
                 </div>
             </div>
         </div>
-    </div>
-    <div class="card-body p-4">
-        <h4>Service</h4>
-        <hr />
-        <form asp-action="Edit">
-            <div asp-validation-summary="ModelOnly" class="text-danger mb-3"></div>
-            <input type="hidden" asp-for="ServiceId" />
-            <div class="form-group">
-                <label asp-for="ServiceName" class="control-label"></label>
-                <input asp-for="ServiceName" class="form-control" />
-                <span asp-validation-for="ServiceName" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="Description" class="control-label"></label>
-                <input asp-for="Description" class="form-control" />
-                <span asp-validation-for="Description" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="TotalCost" class="control-label"></label>
-                <input asp-for="TotalCost" class="form-control" />
-                <span asp-validation-for="TotalCost" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="ServiceTypeId" class="control-label"></label>
-                <select asp-for="ServiceTypeId" class="form-control" asp-items="ViewBag.ServiceTypeId"></select>
-                <span asp-validation-for="ServiceTypeId" class="text-danger"></span>
-            </div>
-            <div class="form-group mt-3">
-                <input type="submit" value="Save" class="btn btn-primary" />
-            </div>
-        </form>
-    </div>
-    <div class="card-footer text-center">
-        <a asp-action="Index" class="btn btn-secondary">Back to List</a>
+        <div class="card-body p-4">
+            <h4>Service</h4>
+            <hr />
+            <form asp-action="Edit">
+                <div asp-validation-summary="ModelOnly" class="text-danger mb-3"></div>
+                <input type="hidden" asp-for="ServiceId" />
+                <div class="form-group mb-3">
+                    <label asp-for="ServiceName" class="form-label"></label>
+                    <input asp-for="ServiceName" class="form-control" />
+                    <span asp-validation-for="ServiceName" class="text-danger"></span>
+                </div>
+                <div class="form-group mb-3">
+                    <label asp-for="Description" class="form-label"></label>
+                    <input asp-for="Description" class="form-control" />
+                    <span asp-validation-for="Description" class="text-danger"></span>
+                </div>
+                <div class="form-group mb-3">
+                    <label asp-for="TotalCost" class="form-label"></label>
+                    <input asp-for="TotalCost" class="form-control" />
+                    <span asp-validation-for="TotalCost" class="text-danger"></span>
+                </div>
+                <div class="form-group mb-4">
+                    <label asp-for="ServiceTypeId" class="form-label"></label>
+                    <select asp-for="ServiceTypeId" class="form-control" asp-items="ViewBag.ServiceTypeId"></select>
+                    <span asp-validation-for="ServiceTypeId" class="text-danger"></span>
+                </div>
+                <div class="form-group mt-3">
+                    <input type="submit" value="Save" class="btn btn-primary" />
+                </div>
+            </form>
+        </div>
+        <div class="card-footer text-center">
+            <a asp-action="Index" class="btn btn-secondary">Back to List</a>
+        </div>
     </div>
 </div>
 
-@section Scripts {
-    @{
-        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+<style>
+    /* Overlay styles */
+    .overlay {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background-color: rgba(255, 165, 0, 0.1); /* Dark orange with 30% transparency */
+        z-index: 0; /* Below the content but above the background image */
     }
+
+    /* Ensure the image is behind the overlay */
+    .background-image {
+        z-index: -1; /* Set background image behind everything else */
+    }
+</style>
+
+@section Scripts {
+    @await Html.PartialAsync("_ValidationScriptsPartial")
 }
