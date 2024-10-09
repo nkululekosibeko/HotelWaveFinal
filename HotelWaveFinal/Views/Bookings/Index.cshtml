@@ -1,62 +1,84 @@
 ﻿@model IEnumerable<HotelWaveFinal.Models.Booking>
 
-<div class="card shadow border-0 my-4">
-    <div class="card-header bg-secondary bg-gradient ml-0 py-3">
-        <div class="row">
-            <div class="col-12 text-center">
-                <h2 class="text-white py-2">Booking List</h2>
+<div class="container my-5" style="position: relative; padding: 60px 0;">
+    <img src="~/assets/royal-master/image/about_banner.jpg" alt="Background" class="background-image" style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; object-fit: cover; z-index: -1;">
+    <div class="overlay"></div> <!-- Overlay for dark navy color -->
+    <div class="card shadow border-0 mx-auto" style="width: 85%; border-radius: 10px; box-shadow: 0 4px 20px rgba(0, 0, 0, 0.5);">
+        <!-- Added border radius and shadow -->
+        <div class="card-header bg-info bg-gradient py-3">
+            <div class="row">
+                <div class="col-12 text-center">
+                    <div class="text-white py-2">
+                        <h2>Booking List</h2>
+                    </div>
+                </div>
             </div>
         </div>
-    </div>
-    <div class="card-body p-4">
-        <div class="row pb-3">
-            <div class="col-6">
-            </div>
-            <div class="col-6 text-end">
-                <a asp-action="Create" class="btn btn-primary">
+        <div class="card-body p-4">
+            <p>
+                <a asp-action="Create" class="btn btn-success">
                     <i class="bi bi-plus-circle"></i> Create New Booking
                 </a>
+            </p>
+            <div style="overflow-x:auto;">
+                <!-- Ensures horizontal scroll if content overflows -->
+                <table class="table table-hover" style="min-width: 100%;">
+                    <!-- Table covers full container width -->
+                    <thead class="table-dark">
+                        <tr>
+                            <th>@Html.DisplayNameFor(model => model.Name)</th>
+                            <th>@Html.DisplayNameFor(model => model.PhoneNumber)</th>
+                            <th>@Html.DisplayNameFor(model => model.CheckIn)</th>
+                            <th>@Html.DisplayNameFor(model => model.CheckOut)</th>
+                            <th>@Html.DisplayNameFor(model => model.NumberOfAdults)</th>
+                            <th>@Html.DisplayNameFor(model => model.NumberOfChildren)</th>
+                            <th>@Html.DisplayNameFor(model => model.Room.RoomId)</th>
+                            <th>@Html.DisplayNameFor(model => model.Status)</th>
+                            <th>@Html.DisplayNameFor(model => model.UserId)</th>
+                            <th></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var item in Model)
+                        {
+                            <tr>
+                                <td>@Html.DisplayFor(modelItem => item.Name)</td>
+                                <td>@Html.DisplayFor(modelItem => item.PhoneNumber)</td>
+                                <td>@Html.DisplayFor(modelItem => item.CheckIn)</td>
+                                <td>@Html.DisplayFor(modelItem => item.CheckOut)</td>
+                                <td>@Html.DisplayFor(modelItem => item.NumberOfAdults)</td>
+                                <td>@Html.DisplayFor(modelItem => item.NumberOfChildren)</td>
+                                <td>@Html.DisplayFor(modelItem => item.Room.RoomId)</td>
+                                <td>@Html.DisplayFor(modelItem => item.Status)</td>
+                                <td>@Html.DisplayFor(modelItem => item.UserId)</td>
+                                <td>
+                                    <a asp-action="Edit" asp-route-id="@item.BookingId" class="btn btn-warning btn-sm">Edit</a>
+                                    <a asp-action="Delete" asp-route-id="@item.BookingId" class="btn btn-danger btn-sm">Delete</a>
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
             </div>
         </div>
-
-        <table id="tblData" class="table table-bordered table-striped" style="width:100%">
-            <thead>
-                <tr>
-                    <th>@Html.DisplayNameFor(model => model.Name)</th>
-                    <th>@Html.DisplayNameFor(model => model.PhoneNumber)</th>
-                    <th>@Html.DisplayNameFor(model => model.CheckIn)</th>
-                    <th>@Html.DisplayNameFor(model => model.CheckOut)</th>
-                    <th>@Html.DisplayNameFor(model => model.NumberOfAdults)</th>
-                    <th>@Html.DisplayNameFor(model => model.NumberOfChildren)</th>
-                    <th>@Html.DisplayNameFor(model => model.Room)</th>
-                    <th>@Html.DisplayNameFor(model => model.Status)</th>
-                    <th>@Html.DisplayNameFor(model => model.UserId)</th>
-                    <th></th>
-                </tr>
-            </thead>
-            <tbody>
-                @foreach (var item in Model)
-                {
-                    <tr>
-                        <td>@Html.DisplayFor(modelItem => item.Name)</td>
-                        <td>@Html.DisplayFor(modelItem => item.PhoneNumber)</td>
-                        <td>@Html.DisplayFor(modelItem => item.CheckIn)</td>
-                        <td>@Html.DisplayFor(modelItem => item.CheckOut)</td>
-                        <td>@Html.DisplayFor(modelItem => item.NumberOfAdults)</td>
-                        <td>@Html.DisplayFor(modelItem => item.NumberOfChildren)</td>
-                        <td>@Html.DisplayFor(modelItem => item.Room.RoomId)</td>
-                        <td>@Html.DisplayFor(modelItem => item.Status)</td>
-                        <td>@Html.DisplayFor(modelItem => item.UserId)</td>
-                        <td>
-                            <a asp-action="Edit" asp-route-id="@item.BookingId" class="btn btn-sm btn-outline-secondary">Edit</a> |
-                            <a asp-action="Delete" asp-route-id="@item.BookingId" class="btn btn-sm btn-outline-danger">Delete</a>
-                        </td>
-                    </tr>
-                }
-            </tbody>
-        </table>
     </div>
 </div>
+
+<style>
+    .overlay {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background-color: rgba(255, 165, 0, 0.1); /* Dark orange with 30% transparency */
+        z-index: 0;
+    }
+
+    .background-image {
+        z-index: -1;
+    }
+</style>
 
 @section Scripts {
     <script src="~/js/booking.js"></script>

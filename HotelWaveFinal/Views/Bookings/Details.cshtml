@@ -1,58 +1,80 @@
 ﻿@model HotelWaveFinal.Models.Booking
 
-<div class="card shadow border-0 my-4">
-    <div class="card-header bg-secondary bg-gradient ml-0 py-3">
-        <div class="row">
-            <div class="col-12 text-center">
-                <h2 class="text-white py-2">Booking Details</h2>
+<div class="container my-5" style="position: relative; padding: 60px 0;">
+    <img src="~/assets/royal-master/image/about_banner.jpg" alt="Background" class="background-image" style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; object-fit: cover; z-index: -1;">
+    <div class="overlay"></div> <!-- Overlay for dark navy color -->
+    <div class="card shadow border-0 mx-auto" style="width: 85%; border-radius: 10px; box-shadow: 0 4px 20px rgba(0, 0, 0, 0.5);">
+        <!-- Added border radius and shadow -->
+        <div class="card-header bg-info bg-gradient py-3">
+            <div class="row">
+                <div class="col-12 text-center">
+                    <div class="text-white py-2">
+                        <h2>Booking Details</h2>
+                    </div>
+                </div>
             </div>
         </div>
-    </div>
-    <div class="card-body p-4">
-        <div class="row">
-            <div class="col-md-8 offset-md-2">
-                <dl class="row">
-                    <dt class="col-sm-4">@Html.DisplayNameFor(model => model.Name)</dt>
-                    <dd class="col-sm-8">@Html.DisplayFor(model => model.Name)</dd>
+        <div class="card-body p-4">
+            <div class="row">
+                <div class="col-md-8 offset-md-2">
+                    <dl class="row">
+                        <dt class="col-sm-4">@Html.DisplayNameFor(model => model.Name)</dt>
+                        <dd class="col-sm-8">@Html.DisplayFor(model => model.Name)</dd>
 
-                    <dt class="col-sm-4">@Html.DisplayNameFor(model => model.PhoneNumber)</dt>
-                    <dd class="col-sm-8">@Html.DisplayFor(model => model.PhoneNumber)</dd>
+                        <dt class="col-sm-4">@Html.DisplayNameFor(model => model.PhoneNumber)</dt>
+                        <dd class="col-sm-8">@Html.DisplayFor(model => model.PhoneNumber)</dd>
 
-                    <dt class="col-sm-4">@Html.DisplayNameFor(model => model.CheckIn)</dt>
-                    <dd class="col-sm-8">@Html.DisplayFor(model => model.CheckIn)</dd>
+                        <dt class="col-sm-4">@Html.DisplayNameFor(model => model.CheckIn)</dt>
+                        <dd class="col-sm-8">@Html.DisplayFor(model => model.CheckIn)</dd>
 
-                    <dt class="col-sm-4">@Html.DisplayNameFor(model => model.CheckOut)</dt>
-                    <dd class="col-sm-8">@Html.DisplayFor(model => model.CheckOut)</dd>
+                        <dt class="col-sm-4">@Html.DisplayNameFor(model => model.CheckOut)</dt>
+                        <dd class="col-sm-8">@Html.DisplayFor(model => model.CheckOut)</dd>
 
-                    <dt class="col-sm-4">@Html.DisplayNameFor(model => model.NumberOfAdults)</dt>
-                    <dd class="col-sm-8">@Html.DisplayFor(model => model.NumberOfAdults)</dd>
+                        <dt class="col-sm-4">@Html.DisplayNameFor(model => model.NumberOfAdults)</dt>
+                        <dd class="col-sm-8">@Html.DisplayFor(model => model.NumberOfAdults)</dd>
 
-                    <dt class="col-sm-4">@Html.DisplayNameFor(model => model.NumberOfChildren)</dt>
-                    <dd class="col-sm-8">@Html.DisplayFor(model => model.NumberOfChildren)</dd>
+                        <dt class="col-sm-4">@Html.DisplayNameFor(model => model.NumberOfChildren)</dt>
+                        <dd class="col-sm-8">@Html.DisplayFor(model => model.NumberOfChildren)</dd>
 
-                    <dt class="col-sm-4">@Html.DisplayNameFor(model => model.Room)</dt>
-                    <dd class="col-sm-8">@Html.DisplayFor(model => model.Room.RoomId)</dd>
+                        <dt class="col-sm-4">@Html.DisplayNameFor(model => model.Room)</dt>
+                        <dd class="col-sm-8">@Html.DisplayFor(model => model.Room.RoomId)</dd>
 
-                    <dt class="col-sm-4">@Html.DisplayNameFor(model => model.Status)</dt>
-                    <dd class="col-sm-8">@Html.DisplayFor(model => model.Status)</dd>
-                </dl>
+                        <dt class="col-sm-4">@Html.DisplayNameFor(model => model.Status)</dt>
+                        <dd class="col-sm-8">@Html.DisplayFor(model => model.Status)</dd>
+                    </dl>
 
-                @if (User.IsInRole(SD.Role_Admin))
-                {
-                    <div class="text-center">
-                        <a asp-action="Edit" asp-route-id="@Model?.BookingId" class="btn btn-primary mx-2">
-                            <i class="bi bi-pencil"></i> Edit
-                        </a>
-                        <a asp-action="Index" class="btn btn-secondary mx-2">Back to List</a>
-                    </div>
-                }
-                else
-                {
-                    <div class="text-center">
-                        <a asp-area="" asp-controller="Home" asp-action="Index" class="btn btn-secondary mx-2">Go Back Home</a>
-                    </div>
-                }
+                    @if (User.IsInRole(SD.Role_Admin))
+                    {
+                        <div class="text-center">
+                            <a asp-action="Edit" asp-route-id="@Model?.BookingId" class="btn btn-warning mx-2">
+                                <i class="bi bi-pencil"></i> Edit
+                            </a>
+                            <a asp-action="Index" class="btn btn-secondary mx-2">Back to List</a>
+                        </div>
+                    }
+                    else
+                    {
+                        <div class="text-center">
+                            <a asp-area="" asp-controller="Home" asp-action="Index" class="btn btn-secondary mx-2">Go Back Home</a>
+                        </div>
+                    }
+                </div>
             </div>
         </div>
     </div>
 </div>
+
+<style>
+    .overlay {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background-color: rgba(255, 165, 0, 0.1); /* Dark orange with 30% transparency */
+        z-index: 0;
+    }
+    .background-image {
+        z-index: -1;
+    }
+</style>
