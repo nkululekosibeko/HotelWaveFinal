@@ -13,41 +13,57 @@
         <div class="row">
             <div class="col-md-8 offset-md-2">
                 <dl class="row">
-                    <dt class="col-sm-4">@Html.DisplayNameFor(model => model.CustomerName)</dt>
-                    <dd class="col-sm-8">@Html.DisplayFor(model => model.CustomerName)</dd>
+                    <dt class="col-sm-4">@Html.DisplayNameFor(model => model.Name)</dt>
+                    <dd class="col-sm-8">@Html.DisplayFor(model => model.Name)</dd>
 
-                    <dt class="col-sm-4">@Html.DisplayNameFor(model => model.PhoneNumber)</dt>
-                    <dd class="col-sm-8">@Html.DisplayFor(model => model.PhoneNumber)</dd>
+                        <dt class="col-sm-4">@Html.DisplayNameFor(model => model.PhoneNumber)</dt>
+                        <dd class="col-sm-8">@Html.DisplayFor(model => model.PhoneNumber)</dd>
 
-                    <dt class="col-sm-4">@Html.DisplayNameFor(model => model.CheckIn)</dt>
-                    <dd class="col-sm-8">@Html.DisplayFor(model => model.CheckIn)</dd>
+                        <dt class="col-sm-4">@Html.DisplayNameFor(model => model.CheckIn)</dt>
+                        <dd class="col-sm-8">@Html.DisplayFor(model => model.CheckIn)</dd>
 
-                    <dt class="col-sm-4">@Html.DisplayNameFor(model => model.CheckOut)</dt>
-                    <dd class="col-sm-8">@Html.DisplayFor(model => model.CheckOut)</dd>
+                        <dt class="col-sm-4">@Html.DisplayNameFor(model => model.CheckOut)</dt>
+                        <dd class="col-sm-8">@Html.DisplayFor(model => model.CheckOut)</dd>
 
-                    <dt class="col-sm-4">@Html.DisplayNameFor(model => model.NumberOfAdults)</dt>
-                    <dd class="col-sm-8">@Html.DisplayFor(model => model.NumberOfAdults)</dd>
+                        <dt class="col-sm-4">@Html.DisplayNameFor(model => model.NumberOfAdults)</dt>
+                        <dd class="col-sm-8">@Html.DisplayFor(model => model.NumberOfAdults)</dd>
 
-                    <dt class="col-sm-4">@Html.DisplayNameFor(model => model.NumberOfChildren)</dt>
-                    <dd class="col-sm-8">@Html.DisplayFor(model => model.NumberOfChildren)</dd>
+                        <dt class="col-sm-4">@Html.DisplayNameFor(model => model.NumberOfChildren)</dt>
+                        <dd class="col-sm-8">@Html.DisplayFor(model => model.NumberOfChildren)</dd>
 
-                    <dt class="col-sm-4">@Html.DisplayNameFor(model => model.Room)</dt>
-                    <dd class="col-sm-8">@Html.DisplayFor(model => model.Room.RoomId)</dd>
+                        <dt class="col-sm-4">@Html.DisplayNameFor(model => model.Room)</dt>
+                        <dd class="col-sm-8">@Html.DisplayFor(model => model.Room.RoomId)</dd>
 
-                    <dt class="col-sm-4">@Html.DisplayNameFor(model => model.Status)</dt>
-                    <dd class="col-sm-8">@Html.DisplayFor(model => model.Status)</dd>
+                        <dt class="col-sm-4">@Html.DisplayNameFor(model => model.Status)</dt>
+                        <dd class="col-sm-8">@Html.DisplayFor(model => model.Status)</dd>
 
-                    <dt class="col-sm-4">@Html.DisplayNameFor(model => model.UserId)</dt>
-                    <dd class="col-sm-8">@Html.DisplayFor(model => model.UserId)</dd>
-                </dl>
+                        <dt class="col-sm-4">@Html.DisplayNameFor(model => model.UserId)</dt>
+                        <dd class="col-sm-8">@Html.DisplayFor(model => model.UserId)</dd>
+                    </dl>
 
-                <form asp-action="Delete" class="text-center">
-                    <input type="hidden" asp-for="BookingId" />
-                    <input type="hidden" asp-for="UserId" /> <!-- Adding UserId field here -->
-                    <input type="submit" value="Delete" class="btn btn-danger mx-2" />
-                    <a asp-action="Index" class="btn btn-secondary mx-2">Back to List</a>
-                </form>
+                    <form asp-action="Delete" class="text-center">
+                        <input type="hidden" asp-for="BookingId" />
+                        <input type="hidden" asp-for="UserId" />
+                        <input type="submit" value="Delete" class="btn btn-danger mx-2" />
+                        <a asp-action="Index" class="btn btn-secondary mx-2">Back to List</a>
+                    </form>
+                </div>
             </div>
         </div>
     </div>
 </div>
+
+<style>
+    .overlay {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background-color: rgba(255, 165, 0, 0.1); /* Dark orange with 30% transparency */
+        z-index: 0;
+    }
+    .background-image {
+        z-index: -1;
+    }
+</style>
