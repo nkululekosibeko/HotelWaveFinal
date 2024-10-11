@@ -20,31 +20,50 @@
         </div>
         <div class="card-body p-4">
             <form asp-action="Edit">
-                <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                <div asp-validation-summary="ModelOnly" class="text-danger mb-3"></div>
                 <input type="hidden" asp-for="RoomId" />
 
-                <div class="form-floating mb-3">
+                <!-- Room Number Field -->
+                <div class="form-group mb-3">
+                    <label asp-for="RoomNumber" class="form-label"></label>
                     <input asp-for="RoomNumber" class="form-control" />
-                    <label asp-for="RoomNumber" class="ms-2 text-muted">Room Number</label>
                     <span asp-validation-for="RoomNumber" class="text-danger"></span>
                 </div>
 
-                <div class="form-floating form-check mb-3">
-                    <label class="form-check-label">
-                        <input class="form-check-input" asp-for="IsAvailable" /> @Html.DisplayNameFor(model => model.IsAvailable)
+                <!-- Availability Checkbox -->
+                <div class="form-group form-check mb-3">
+                    <input asp-for="IsAvailable" class="form-check-input" />
+                    <label class="form-check-label" for="IsAvailable">
+                        @Html.DisplayNameFor(model => model.IsAvailable)
                     </label>
                 </div>
 
-                <div class="form-floating mb-3">
+                <!-- Room Type Dropdown -->
+                <div class="form-group mb-4">
+                    <label asp-for="RoomTypeId" class="form-label">Room Type</label>
+                    <select asp-for="RoomTypeId" class="form-control" asp-items="ViewBag.RoomTypeId"></select>
+                    <span asp-validation-for="RoomTypeId" class="text-danger"></span>
+                </div>
+
+                <!-- Price Per Night Field -->
+                <div class="form-group mb-3">
+                    <label asp-for="PricePerNight" class="form-label"></label>
                     <input asp-for="PricePerNight" class="form-control" />
-                    <label asp-for="PricePerNight" class="ms-2 text-muted">Price Per Night</label>
                     <span asp-validation-for="PricePerNight" class="text-danger"></span>
                 </div>
 
-                <div class="form-floating mb-3">
-                    <select asp-for="RoomTypeId" class="form-select" asp-items="ViewBag.RoomTypeId"></select>
-                    <label asp-for="RoomTypeId" class="ms-2 text-muted">Room Type</label>
-                    <span asp-validation-for="RoomTypeId" class="text-danger"></span>
+                <!-- Max Adults Field -->
+                <div class="form-group mb-3">
+                    <label asp-for="MaxAdults" class="form-label"></label>
+                    <input asp-for="MaxAdults" class="form-control" />
+                    <span asp-validation-for="MaxAdults" class="text-danger"></span>
+                </div>
+
+                <!-- Max Children Field -->
+                <div class="form-group mb-3">
+                    <label asp-for="MaxChildren" class="form-label"></label>
+                    <input asp-for="MaxChildren" class="form-control" />
+                    <span asp-validation-for="MaxChildren" class="text-danger"></span>
                 </div>
 
                 <div class="text-center">
@@ -72,10 +91,38 @@
     .background-image {
         z-index: -1; /* Set background image behind everything else */
     }
+
+    /* Adjust card styles */
+    .card {
+        border-radius: 10px;
+        overflow: hidden;
+        box-shadow: 0 4px 20px rgba(0, 0, 0, 0.5);
+    }
+
+    .card-header {
+        background-color: #ffc107;
+        color: black;
+        text-align: center;
+    }
+
+    .btn-primary {
+        background-color: #007bff;
+        border: none;
+        padding: 10px 20px;
+    }
+
+    .btn-secondary {
+        background-color: #6c757d;
+        border: none;
+        padding: 10px 20px;
+    }
+
+    h2 {
+        color: #343a40;
+        font-weight: 600;
+    }
 </style>
 
 @section Scripts {
-    @{
-        await Html.RenderPartialAsync("_ValidationScriptsPartial");
-    }
+    @await Html.PartialAsync("_ValidationScriptsPartial")
 }

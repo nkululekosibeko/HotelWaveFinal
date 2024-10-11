@@ -1,8 +1,5 @@
 ﻿@model HotelWaveFinal.Models.Room
 
-@{
-    ViewData["Title"] = "Create Room";
-}
 
 <div class="container my-5" style="position: relative; padding: 60px 0;">
     <img src="~/assets/royal-master/image/about_banner.jpg" alt="Background" class="background-image" style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; object-fit: cover; z-index: -1;"> <!-- Background image -->
@@ -22,12 +19,14 @@
             <form asp-action="Create">
                 <div asp-validation-summary="ModelOnly" class="text-danger mb-3"></div>
 
+                <!-- Room Number Field -->
                 <div class="form-group mb-3">
                     <label asp-for="RoomNumber" class="form-label"></label>
                     <input asp-for="RoomNumber" class="form-control" />
                     <span asp-validation-for="RoomNumber" class="text-danger"></span>
                 </div>
 
+                <!-- Availability Checkbox -->
                 <div class="form-group form-check mb-3">
                     <input asp-for="IsAvailable" class="form-check-input" />
                     <label class="form-check-label" for="IsAvailable">
@@ -35,16 +34,37 @@
                     </label>
                 </div>
 
+                <!-- Room Type Dropdown -->
+                <div class="form-group mb-4">
+                    <label asp-for="RoomTypeId" class="form-label">Room Type</label>
+                    <select asp-for="RoomTypeId" class="form-control" asp-items="ViewBag.RoomTypeId"></select>
+                    <span asp-validation-for="RoomTypeId" class="text-danger"></span>
+                </div>
+
+
+                <!-- Price Per Night Field -->
                 <div class="form-group mb-3">
                     <label asp-for="PricePerNight" class="form-label"></label>
                     <input asp-for="PricePerNight" class="form-control" />
                     <span asp-validation-for="PricePerNight" class="text-danger"></span>
                 </div>
 
-                <div class="form-group mb-4">
-                    <label asp-for="RoomTypeId" class="form-label"></label>
-                    <select asp-for="RoomTypeId" class="form-control" asp-items="ViewBag.RoomTypeId"></select>
+                <!-- Max Adults Field -->
+                <div class="form-group mb-3">
+                    <label asp-for="MaxAdults" class="form-label"></label>
+                    <input asp-for="MaxAdults" class="form-control" />
+                    <span asp-validation-for="MaxAdults" class="text-danger"></span>
                 </div>
+
+                <!-- Max Children Field -->
+                <div class="form-group mb-3">
+                    <label asp-for="MaxChildren" class="form-label"></label>
+                    <input asp-for="MaxChildren" class="form-control" />
+                    <span asp-validation-for="MaxChildren" class="text-danger"></span>
+                </div>
+
+
+
 
                 <div class="text-center">
                     <input type="submit" value="Create" class="btn btn-primary me-2" />
@@ -63,13 +83,43 @@
         left: 0;
         width: 100%;
         height: 100%;
-        background-color: rgba(255, 165, 0, 0.1); /* Dark orange with 30% transparency */
+        background-color: rgba(255, 165, 0, 0.1); /* Dark orange with transparency */
         z-index: 0; /* Below the content but above the background image */
     }
 
     /* Ensure the image is behind the overlay */
     .background-image {
         z-index: -1; /* Set background image behind everything else */
+    }
+
+    /* Adjust card styles */
+    .card {
+        border-radius: 10px;
+        overflow: hidden;
+        box-shadow: 0 4px 20px rgba(0, 0, 0, 0.5);
+    }
+
+    .card-header {
+        background-color: #6c757d;
+        color: white;
+        text-align: center;
+    }
+
+    .btn-primary {
+        background-color: #007bff;
+        border: none;
+        padding: 10px 20px;
+    }
+
+    .btn-secondary {
+        background-color: #6c757d;
+        border: none;
+        padding: 10px 20px;
+    }
+
+    h2 {
+        color: #343a40;
+        font-weight: 600;
     }
 </style>
 

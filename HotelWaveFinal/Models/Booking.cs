@@ -8,7 +8,7 @@ namespace HotelWaveFinal.Models
     {
         [Key]
         public int BookingId { get; set; }
-        public string Name { get; set; }
+        public string CustomerName { get; set; }
         public string PhoneNumber { get; set; }
         public DateOnly CheckIn { get; set; }
         public DateOnly CheckOut { get; set; }

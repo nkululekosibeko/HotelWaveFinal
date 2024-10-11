@@ -11,7 +11,7 @@ using Microsoft.AspNetCore.Authorization;
 
 namespace HotelWaveFinal.Controllers
 {
-    [Authorize(Roles = SD.Role_Admin)]
+    [Authorize]
     public class RoomsController : Controller
     {
         private readonly ApplicationDBContext _context;
@@ -46,33 +46,38 @@ namespace HotelWaveFinal.Controllers
 
             return View(room);
         }
-
+        [Authorize(Roles = SD.Role_Admin)]
         // GET: Rooms/Create
         public IActionResult Create()
         {
-            ViewData["RoomTypeId"] = new SelectList(_context.RoomTypes, "RoomTypeId", "RoomTypeId");
+            // Populating the ViewBag for RoomTypeId dropdown
+            ViewBag.RoomTypeId = new SelectList(_context.RoomTypes.ToList(), "RoomTypeId", "TypeName");
             return View();
         }
 
-        // POST: Rooms/Create
-        // To protect from overposting attacks, enable the specific properties you want to bind to.
-        // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
+        // POST: Room/Create
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("RoomId,RoomNumber,IsAvailable,PricePerNight,RoomTypeId")] Room room)
+        public async Task<IActionResult> Create(Room room)
         {
-            if (ModelState.IsValid)
+            if (!ModelState.IsValid)
             {
                 _context.Add(room);
                 await _context.SaveChangesAsync();
-                TempData["success"] = "Room Added Successfully";
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["RoomTypeId"] = new SelectList(_context.RoomTypes, "RoomTypeId", "RoomTypeId", room.RoomTypeId);
+
+            // Repopulate the dropdown in case of validation errors
+            ViewBag.RoomTypeId = new SelectList(_context.RoomTypes.ToList(), "RoomTypeId", "TypeName", room.RoomTypeId);
             return View(room);
         }
 
+
+
+
+
         // GET: Rooms/Edit/5
+        [Authorize(Roles = SD.Role_Admin)]
         public async Task<IActionResult> Edit(int? id)
         {
             if (id == null)
@@ -128,6 +133,7 @@ namespace HotelWaveFinal.Controllers
         }
 
         // GET: Rooms/Delete/5
+        [Authorize(Roles = SD.Role_Admin)]
         public async Task<IActionResult> Delete(int? id)
         {
             if (id == null)
@@ -166,5 +172,37 @@ namespace HotelWaveFinal.Controllers
         {
             return _context.Rooms.Any(e => e.RoomId == id);
         }
+
+
+        public List<Room> CheckRoomAvailability(DateOnly checkInDate, DateOnly checkOutDate, int adults, int children)
+        {
+            // Query available rooms
+            var availableRooms = _context.Rooms
+                .Where(r => r.IsAvailable)
+                .Where(r => r.MaxAdults >= adults && r.MaxChildren >= children)
+                .Where(r => !r.Bookings.Any(b => b.CheckIn < checkOutDate && b.CheckOut > checkInDate)) // No conflicting bookings
+                .ToList();
+
+            return availableRooms;
+        }
+
+        [HttpPost]
+        public IActionResult CheckAvailability(DateOnly checkInDate, DateOnly checkOutDate, int adults, int children)
+        {
+            var availableRooms = CheckRoomAvailability(checkInDate, checkOutDate, adults, children);
+
+            if (availableRooms.Any())
+            {
+                // Pass available rooms to the view
+                return View("AvailableRooms", availableRooms);
+            }
+            else
+            {
+                ViewBag.Message = "No rooms available for the selected criteria.";
+                return View("NoAvailability");
+            }
+        }
+
+
     }
 }

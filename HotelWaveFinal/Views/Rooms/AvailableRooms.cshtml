@@ -1,0 +1,85 @@
+﻿@model IEnumerable<HotelWaveFinal.Models.Room>
+
+<div class="container mt-5">
+    <h2 class="text-center mb-4">Available Rooms</h2>
+    <div class="row">
+        @foreach (var room in Model)
+        {
+            <div class="col-lg-4 col-md-6 mb-4">
+                <div class="card shadow-sm">
+                    <div class="card-body">
+                        <h5 class="card-title text-primary">
+                            @room.RoomNumber - @(room.RoomType != null ? room.RoomType.TypeName : "N/A")
+                        </h5>
+                        <p class="card-text">Price per night: <strong>R @room.PricePerNight</strong></p>
+                        <p class="card-text">
+                            Max Adults: <span class="badge badge-success">@room.MaxAdults</span> <br />
+                            Max Children: <span class="badge badge-info">@room.MaxChildren</span>
+                        </p>
+                        <a href="#" class="btn btn-primary mt-3">Book Now</a>
+                    </div>
+                </div>
+            </div>
+        }
+    </div>
+</div>
+
+<!-- Inline Styles -->
+<style>
+    .card {
+        border-radius: 10px;
+        overflow: hidden;
+        transition: transform 0.3s ease-in-out;
+    }
+
+        .card:hover {
+            transform: scale(1.05);
+        }
+
+    .card-title {
+        font-weight: bold;
+    }
+
+    .card-text {
+        font-size: 1rem;
+    }
+
+    .badge {
+        padding: 0.4em 0.8em;
+        font-size: 0.85rem;
+    }
+
+    .btn-primary {
+        background-color: #007bff;
+        border: none;
+        border-radius: 5px;
+        padding: 0.5rem 1rem;
+        font-size: 1rem;
+        transition: background-color 0.2s;
+    }
+
+        .btn-primary:hover {
+            background-color: #0056b3;
+        }
+
+    h2 {
+        color: #343a40;
+        font-weight: 600;
+    }
+
+    .container {
+        max-width: 1200px;
+    }
+
+    .mt-5 {
+        margin-top: 3rem;
+    }
+
+    .mb-4 {
+        margin-bottom: 1.5rem;
+    }
+
+    .card-body {
+        padding: 1.5rem;
+    }
+</style>
