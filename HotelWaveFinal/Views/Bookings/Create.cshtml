@@ -1,10 +1,12 @@
 ﻿@model HotelWaveFinal.Models.Booking
+@{
+    var room = ViewData["RoomDetails"] as HotelWaveFinal.Models.Room;
+}
 
 <div class="container my-5" style="position: relative; padding: 60px 0;">
     <img src="~/assets/royal-master/image/about_banner.jpg" alt="Background" class="background-image" style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; object-fit: cover; z-index: -1;">
-    <div class="overlay"></div> <!-- Overlay for dark navy color -->
+    <div class="overlay"></div>
     <div class="card shadow border-0 mx-auto" style="width: 85%; border-radius: 10px; box-shadow: 0 4px 20px rgba(0, 0, 0, 0.5);">
-        <!-- Added border radius and shadow -->
         <div class="card-header bg-info bg-gradient py-3">
             <div class="row">
                 <div class="col-12 text-center">
@@ -16,93 +18,77 @@
         </div>
         <div class="card-body p-4">
             <form asp-action="Create" class="row" enctype="multipart/form-data">
+                <!-- Hidden fields for Room and Booking -->
+                <input type="hidden" asp-for="RoomId" value="@room.RoomId" />
                 <input asp-for="BookingId" hidden />
-                <input asp-for="Status" hidden />
+                <input asp-for="Status" hidden value="Pending" />
 
-            <div class="row">
-                <div class="col-12">
-                    <div class="border p-3">
-                        <!-- Name field -->
-                        <div class="form-floating py-2 col-12">
-                            <input asp-for="Name" class="form-control border-0 shadow" placeholder="Enter your full name" />
-                            <label asp-for="Name" class="ms-2">Full Name</label>
-                            <span asp-validation-for="Name" class="text-danger"></span>
-                        </div>
-
-                            <!-- Phone number field -->
-                            <div class="form-floating py-2 col-12">
-                                <input asp-for="PhoneNumber" class="form-control border-0 shadow" placeholder="Enter your phone number" />
-                                <label asp-for="PhoneNumber" class="ms-2">Phone Number</label>
-                                <span asp-validation-for="PhoneNumber" class="text-danger"></span>
-                            </div>
-
-                            <!-- Check-in date -->
-                            <div class="form-floating py-2 col-12">
-                                <input asp-for="CheckIn" type="date" class="form-control border-0 shadow" placeholder="Select Check-in Date" min="@DateTime.Now.ToString("yyyy-MM-dd")" />
-                                <label asp-for="CheckIn" class="ms-2">Check-in Date</label>
-                                <span asp-validation-for="CheckIn" class="text-danger"></span>
-                            </div>
-
-                            <!-- Check-out date -->
-                            <div class="form-floating py-2 col-12">
-                                <input asp-for="CheckOut" type="date" class="form-control border-0 shadow" id="checkOutDate" min="@DateTime.Now.ToString("yyyy-MM-dd")" />
-                                <label asp-for="CheckOut" class="ms-2">Check-out Date</label>
-                                <span asp-validation-for="CheckOut" class="text-danger"></span>
-                            </div>
-
-                            <!-- Number of Adults -->
-                            <div class="form-floating py-2 col-12">
-                                <input asp-for="NumberOfAdults" class="form-control border-0 shadow" type="number" min="1" max="10" />
-                                <label asp-for="NumberOfAdults" class="ms-2">Number of Adults</label>
-                                <span asp-validation-for="NumberOfAdults" class="text-danger"></span>
-                            </div>
-
-                            <!-- Number of Children -->
-                            <div class="form-floating py-2 col-12">
-                                <input asp-for="NumberOfChildren" class="form-control border-0 shadow" type="number" min="0" max="10" />
-                                <label asp-for="NumberOfChildren" class="ms-2">Number of Children</label>
-                                <span asp-validation-for="NumberOfChildren" class="text-danger"></span>
-                            </div>
-
-                            <!-- Room selection -->
-                            <div class="form-floating py-2 col-12">
-                                <select asp-for="RoomId" class="form-select border-0 shadow" asp-items="ViewBag.RoomId">
-                                    <option disabled selected>--Select Room--</option>
-                                </select>
-                                <label asp-for="RoomId" class="ms-2">Room</label>
-                                <span asp-validation-for="RoomId" class="text-danger"></span>
-                            </div>
-
-                            <!-- Status field (hidden for non-admins) -->
-                            @if (User.IsInRole("Admin"))
-                            {
-                                <div class="form-floating py-2 col-12">
-                                    <input asp-for="Status" class="form-control border-0 shadow" />
-                                    <label asp-for="Status" class="ms-2">Status</label>
-                                    <span asp-validation-for="Status" class="text-danger"></span>
-                                </div>
-                            }
-                            else
-                            {
-                                <input asp-for="Status" type="hidden" value="Pending" />
-                            }
-
-                            <!-- Submit button -->
-                            <div class="row pt-2">
-                                <div class="col-6 col-md-3">
-                                    <button type="submit" class="btn btn-primary form-control">Create Booking</button>
-                                </div>
-                                <div class="col-6 col-md-3">
-                                    <a asp-controller="Home" asp-action="Index" class="btn btn-outline-primary form-control">Back to Home</a>
-                                </div>
-                            </div>
+                <!-- Room Information Section -->
+                <div class="row mb-3">
+                    <div class="col-12">
+                        <div class="card shadow-sm p-4">
+                            <h4>Room Details</h4>
+                            <p>Room Number: <strong>@room.RoomNumber</strong></p>
+                            <p>Room Type: <strong>@room.RoomType.TypeName</strong></p>
+                            <p>Price Per Night: <strong>R @room.PricePerNight</strong></p>
+                            <p>Max Adults: <strong>@room.MaxAdults</strong></p>
+                            <p>Max Children: <strong>@room.MaxChildren</strong></p>
                         </div>
                     </div>
+                </div>
 
-                    <!-- Optional Image Section (for future development if needed) -->
-                    <div class="col-2">
-                        <!-- Placeholder for image -->
-                        @* <img src="@Model.Booking.ImageUrl" width="100%" style="border-radius:5px; border:1px solid #bbb9b9" /> *@
+                <!-- Customer Information Section -->
+                <div class="border p-3 col-12">
+                    <!-- Name field -->
+                    <div class="form-floating py-2 col-12">
+                        <input asp-for="CustomerName" class="form-control border-0 shadow" placeholder="Enter your full name" />
+                        <label asp-for="CustomerName" class="ms-2">Full Name</label>
+                        <span asp-validation-for="CustomerName" class="text-danger"></span>
+                    </div>
+
+                    <!-- Phone number field -->
+                    <div class="form-floating py-2 col-12">
+                        <input asp-for="PhoneNumber" class="form-control border-0 shadow" placeholder="Enter your phone number" />
+                        <label asp-for="PhoneNumber" class="ms-2">Phone Number</label>
+                        <span asp-validation-for="PhoneNumber" class="text-danger"></span>
+                    </div>
+
+                    <!-- Check-in date -->
+                    <div class="form-floating py-2 col-12">
+                        <input asp-for="CheckIn" type="date" class="form-control border-0 shadow" min="@DateTime.Now.ToString("yyyy-MM-dd")" />
+                        <label asp-for="CheckIn" class="ms-2">Check-in Date</label>
+                        <span asp-validation-for="CheckIn" class="text-danger"></span>
+                    </div>
+
+                    <!-- Check-out date -->
+                    <div class="form-floating py-2 col-12">
+                        <input asp-for="CheckOut" type="date" class="form-control border-0 shadow" id="checkOutDate" min="@DateTime.Now.ToString("yyyy-MM-dd")" />
+                        <label asp-for="CheckOut" class="ms-2">Check-out Date</label>
+                        <span asp-validation-for="CheckOut" class="text-danger"></span>
+                    </div>
+
+                    <!-- Number of Adults -->
+                    <div class="form-floating py-2 col-12">
+                        <input asp-for="NumberOfAdults" class="form-control border-0 shadow" type="number" min="1" max="@room.MaxAdults" />
+                        <label asp-for="NumberOfAdults" class="ms-2">Number of Adults</label>
+                        <span asp-validation-for="NumberOfAdults" class="text-danger"></span>
+                    </div>
+
+                    <!-- Number of Children -->
+                    <div class="form-floating py-2 col-12">
+                        <input asp-for="NumberOfChildren" class="form-control border-0 shadow" type="number" min="0" max="@room.MaxChildren" />
+                        <label asp-for="NumberOfChildren" class="ms-2">Number of Children</label>
+                        <span asp-validation-for="NumberOfChildren" class="text-danger"></span>
+                    </div>
+
+                    <!-- Submit button -->
+                    <div class="row pt-2">
+                        <div class="col-6 col-md-3">
+                            <button type="submit" class="btn btn-primary form-control">Create Booking</button>
+                        </div>
+                        <div class="col-6 col-md-3">
+                            <a asp-controller="Home" asp-action="Index" class="btn btn-outline-primary form-control">Back to Home</a>
+                        </div>
                     </div>
                 </div>
             </form>

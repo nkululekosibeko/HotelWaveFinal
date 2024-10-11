@@ -204,5 +204,32 @@ namespace HotelWaveFinal.Controllers
         }
 
 
+        public IActionResult AvailableRoomsByType(int roomTypeId)
+        {
+            // Fetch rooms that are available and match the selected room type
+            var rooms = _context.Rooms
+                .Include(r => r.RoomType) // Include RoomType for display purposes
+                .Where(r => r.RoomTypeId == roomTypeId && r.IsAvailable) // Filter by type and availability
+                .ToList();
+
+            // Pass the rooms list to the view
+            return View(rooms);
+        }
+
+        public IActionResult Create(int? roomId)
+        {
+            // Fetch available rooms again for dropdown if necessary
+            var availableRooms = _context.Rooms
+                .Where(r => r.IsAvailable)
+                .Select(r => new { r.RoomId, r.RoomNumber })
+                .ToList();
+
+            // Pre-select the room if roomId is provided
+            ViewData["RoomId"] = new SelectList(availableRooms, "RoomId", "RoomNumber", roomId);
+            return View();
+        }
+
+
+
     }
 }

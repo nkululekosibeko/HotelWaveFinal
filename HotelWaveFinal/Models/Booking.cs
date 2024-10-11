@@ -25,6 +25,7 @@ namespace HotelWaveFinal.Models
         [ValidateNever]
         public ApplicationUser User { get; set; }
         public string Status { get; set; } = "Pending";
+        public double TotalCost { get; set; }
 
     }
 }

@@ -52,48 +52,76 @@ namespace HotelWaveFinal.Controllers
         [Authorize]
         public IActionResult Create()
         {
-            ViewData["RoomId"] = new SelectList(_context.Rooms, "RoomId", "RoomId");
+            // Fetch only available rooms
+            var availableRooms = _context.Rooms
+                .Where(r => r.IsAvailable) // Filter rooms where IsAvailable is true
+                .Select(r => new { r.RoomId, r.RoomNumber })
+                .ToList();
+
+            // Populate the ViewData for the Room dropdown
+            ViewData["RoomId"] = new SelectList(availableRooms, "RoomId", "RoomNumber"); // Display RoomNumber in dropdown
             return View();
         }
 
+
+
+
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("BookingId,Name,PhoneNumber,CheckIn,CheckOut,NumberOfAdults,NumberOfChildren,RoomId,Status")] Booking booking)
+        public async Task<IActionResult> Create([Bind("BookingId,CustomerName,PhoneNumber,CheckIn,CheckOut,NumberOfAdults,NumberOfChildren,RoomId,Status")] Booking booking)
         {
-            // Get the current user ID
+            var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
 
             if (booking.CheckOut <= booking.CheckIn)
             {
                 ModelState.AddModelError("CheckOut", "Check-out date must be later than check-in date.");
             }
 
-            var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
-
-            // Ensure the user ID is retrieved correctly
             if (string.IsNullOrEmpty(userId))
             {
-                // Handle the case where the user ID is not found
                 ModelState.AddModelError("UserId", "User ID could not be retrieved. Please log in again.");
                 return View(booking);
             }
 
-            booking.UserId = userId;
-           
-
-
-            // Validate if the selected room is available for the given dates
             var roomBooked = _context.Bookings
                 .Where(b => b.RoomId == booking.RoomId &&
                             (b.CheckIn < booking.CheckOut && b.CheckOut > booking.CheckIn))
                 .Any();
 
-            if (roomBooked)
-            {
-                ModelState.AddModelError("RoomId", "The selected room is already booked for the selected dates.");
-            }
+            // Validate number of adults and children against room capacity
+            //if (booking.NumberOfAdults > room.MaxAdults)
+            //{
+            //    ModelState.AddModelError("NumberOfAdults", $"The selected room can only accommodate up to {room.MaxAdults} adults.");
+            //}
+
+            //if (booking.NumberOfChildren > room.MaxChildren)
+            //{
+            //    ModelState.AddModelError("NumberOfChildren", $"The selected room can only accommodate up to {room.MaxChildren} children.");
+
+            //    if (roomBooked)
+            //{
+            //    ModelState.AddModelError("RoomId", "The selected room is already booked for the selected dates.");
+            //}
+
+
 
             if (!ModelState.IsValid)
             {
+                var room = await _context.Rooms.FindAsync(booking.RoomId);
+                if (room != null)
+                {
+                    double adultRate = 1.0;
+                    double childRate = 0.5;
+
+                    booking.TotalCost = room.PricePerNight * (booking.NumberOfAdults * adultRate + booking.NumberOfChildren * childRate);
+
+                    // Mark the room as unavailable
+                    room.IsAvailable = false;
+                    _context.Update(room);
+                }
+
+                booking.UserId = userId;
+
                 if (!User.IsInRole("Admin"))
                 {
                     booking.Status = "Pending";
@@ -105,10 +133,12 @@ namespace HotelWaveFinal.Controllers
                 return RedirectToAction("Details", new { id = booking.BookingId });
             }
 
-            // Reload the RoomId select list if the model state is invalid
-            ViewData["RoomId"] = new SelectList(_context.Rooms, "RoomId", "RoomId", booking.RoomId);
+            ViewData["RoomId"] = new SelectList(_context.Rooms, "RoomId", "RoomNumber", booking.RoomId);
             return View(booking);
         }
+
+
+
 
         [Authorize]
         public async Task<IActionResult> MyBookings()
@@ -140,9 +170,10 @@ namespace HotelWaveFinal.Controllers
                 return NotFound();
             }
 
-            // Optional: Populate dropdown for UserId if needed
-            ViewData["UserId"] = new SelectList(await _context.Users.ToListAsync(), "Id", "UserName", booking.UserId);
+            // Populate the dropdown for Status
+            ViewBag.StatusList = new SelectList(new List<string> { "Pending", "Confirmed", "Checked-In", "Checked-Out", "Cancelled" }, booking.Status);
 
+            ViewData["UserId"] = new SelectList(await _context.Users.ToListAsync(), "Id", "UserName", booking.UserId);
             ViewData["RoomId"] = new SelectList(_context.Rooms, "RoomId", "RoomId", booking.RoomId);
             return View(booking);
         }
@@ -150,7 +181,7 @@ namespace HotelWaveFinal.Controllers
         // POST: Bookings/Edit/5
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("BookingId,Name,PhoneNumber,CheckIn,CheckOut,NumberOfAdults,NumberOfChildren,RoomId,Status")] Booking updatedBooking)
+        public async Task<IActionResult> Edit(int id, [Bind("BookingId,CustomerName,PhoneNumber,CheckIn,CheckOut,NumberOfAdults,NumberOfChildren,RoomId,Status")] Booking updatedBooking)
         {
             if (id != updatedBooking.BookingId)
             {
@@ -161,7 +192,6 @@ namespace HotelWaveFinal.Controllers
             {
                 try
                 {
-                    // Retrieve the existing booking to preserve original UserId
                     var existingBooking = await _context.Bookings.FindAsync(id);
                     if (existingBooking == null)
                     {
@@ -190,11 +220,12 @@ namespace HotelWaveFinal.Controllers
                 }
             }
 
-            // If model state is not valid, return to the view with validation errors
+            ViewBag.StatusList = new SelectList(new List<string> { "Pending", "Confirmed", "Checked-In", "Checked-Out", "Cancelled"}, updatedBooking.Status);
             ViewData["RoomId"] = new SelectList(_context.Rooms, "RoomId", "RoomId", updatedBooking.RoomId);
             ViewData["UserId"] = new SelectList(await _context.Users.ToListAsync(), "Id", "UserName", updatedBooking.UserId);
             return View(updatedBooking);
         }
+
 
 
 

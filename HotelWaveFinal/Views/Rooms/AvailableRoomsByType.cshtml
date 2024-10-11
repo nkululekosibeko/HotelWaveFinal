@@ -1,0 +1,26 @@
+﻿@model IEnumerable<HotelWaveFinal.Models.Room>
+<br />
+<br />
+<br />
+<div class="container mt-5">
+    <h2 class="text-center mb-4">Available Rooms</h2>
+    <div class="row">
+        @foreach (var room in Model)
+        {
+            <div class="col-lg-4 col-md-6 mb-4">
+                <div class="card shadow-sm">
+                    <div class="card-body">
+                        <h5 class="card-title text-primary">@room.RoomNumber - @room.RoomType.TypeName</h5>
+                        <p class="card-text">Price per night: <strong>R @room.PricePerNight</strong></p>
+                        <p class="card-text">
+                            Max Adults: <span class="badge badge-success">@room.MaxAdults</span> <br />
+                            Max Children: <span class="badge badge-info">@room.MaxChildren</span>
+                        </p>
+                        <!-- Link to the Booking Page -->
+                        <a href="@Url.Action("Create", "Bookings", new { roomId = room.RoomId })" class="btn btn-primary mt-3">Select Room</a>
+                    </div>
+                </div>
+            </div>
+        }
+    </div>
+</div>
