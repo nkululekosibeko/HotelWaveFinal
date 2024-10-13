@@ -19,7 +19,7 @@
         <div class="card-body p-4">
             <form asp-action="Edit" class="row" enctype="multipart/form-data">
                 <!-- Hidden fields for Room and Booking -->
-                @* <input type="hidden" asp-for="RoomId" value="@room.RoomId" /> *@
+                <input type="hidden" asp-for="RoomId" value="@room.RoomId" />
                 <input asp-for="BookingId" hidden />
                 <input asp-for="CustomerName" hidden />
                 <input asp-for="PhoneNumber" hidden />
@@ -34,7 +34,7 @@
                         <div class="card shadow-sm p-4">
                             <h4>Room Details</h4>
                             <p>Room Number: <strong>@room.RoomNumber</strong></p>
-                            <p>Room Type: <strong>@room.RoomType.TypeName</strong></p>
+                            @* <p>Room Type: <strong>@room.RoomType.TypeName</strong></p> *@
                             <p>Price Per Night: <strong>R @room.PricePerNight</strong></p>
                             <p>Max Adults: <strong>@room.MaxAdults</strong></p>
                             <p>Max Children: <strong>@room.MaxChildren</strong></p>

@@ -206,34 +206,44 @@ namespace HotelWaveFinal.Controllers
         // POST: Bookings/Edit/5
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("BookingId,RoomId,Status")] Booking updatedBooking)
+        public async Task<IActionResult> Edit(int id, [Bind("BookingId,CustomerName,PhoneNumber,CheckIn,CheckOut,NumberOfAdults,NumberOfChildren,RoomId,Status")] Booking updatedBooking)
         {
             if (id != updatedBooking.BookingId)
             {
                 return NotFound();
             }
 
-            if (ModelState.IsValid)
+            // Ensure RoomId is not null
+            if (updatedBooking.RoomId == null)
+            {
+                ModelState.AddModelError("RoomId", "Please select a valid room.");
+                return View(updatedBooking);
+            }
+            var existingBooking = await _context.Bookings.FindAsync(id);
+            if (existingBooking == null)
+            {
+                return NotFound();
+            } 
+
+            var roomDetails = _context.Rooms.Include(r => r.RoomType)
+                         .FirstOrDefault(r => r.RoomId == existingBooking.RoomId);
+
+            //var roomDetails = await _context.Rooms.FindAsync(updatedBooking.RoomId);
+            if (roomDetails == null)
+            {
+                ModelState.AddModelError("RoomId", "The selected room does not exist.");
+                return View(updatedBooking);
+            }
+            ViewData["RoomDetails"] = roomDetails;
+
+            if (!ModelState.IsValid)
             {
                 try
                 {
-                    var roomDetails = await _context.Rooms.FindAsync(updatedBooking.RoomId);
-                    if (roomDetails != null)
-                    {
-                        ViewData["RoomDetails"] = roomDetails;
-                    }
-                    // Retrieve the existing booking
-                    var existingBooking = await _context.Bookings.FindAsync(id);
-                    if (existingBooking == null)
-                    {
-                        return NotFound();
-                    }
 
-                    // Update only the fields you want to modify (Status in this case)
+                    // Update only the fields you want to modify
                     existingBooking.Status = updatedBooking.Status;
-                    existingBooking.RoomId = updatedBooking.RoomId; // Update RoomId if it's part of the form
-
-
+                    existingBooking.RoomId = updatedBooking.RoomId;
 
                     // Save the changes to the database
                     _context.Update(existingBooking);
@@ -261,6 +271,7 @@ namespace HotelWaveFinal.Controllers
 
             return View(updatedBooking); // Return the form with errors highlighted
         }
+
 
 
 
