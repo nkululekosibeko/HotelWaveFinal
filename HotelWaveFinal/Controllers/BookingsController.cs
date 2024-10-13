@@ -126,7 +126,7 @@ namespace HotelWaveFinal.Controllers
                     double adultRate = 1.0;
                     double childRate = 0.5;
 
-                    booking.TotalCost = room.PricePerNight * (booking.NumberOfAdults * adultRate + booking.NumberOfChildren * childRate);
+                    booking.TotalCost = room.PricePerNight * ( booking.NumberOfChildren * childRate);
 
                     // Mark the room as unavailable
                     room.IsAvailable = false;
@@ -223,7 +223,7 @@ namespace HotelWaveFinal.Controllers
             if (existingBooking == null)
             {
                 return NotFound();
-            } 
+            }
 
             var roomDetails = _context.Rooms.Include(r => r.RoomType)
                          .FirstOrDefault(r => r.RoomId == existingBooking.RoomId);
@@ -244,6 +244,11 @@ namespace HotelWaveFinal.Controllers
                     // Update only the fields you want to modify
                     existingBooking.Status = updatedBooking.Status;
                     existingBooking.RoomId = updatedBooking.RoomId;
+
+                    if (existingBooking.Status == "Checked-Out" || existingBooking.Status == "Cancelled")
+                    {
+                        existingBooking.Room.IsAvailable = true; // Mark room as available
+                    }
 
                     // Save the changes to the database
                     _context.Update(existingBooking);
