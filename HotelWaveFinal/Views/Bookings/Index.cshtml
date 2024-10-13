@@ -12,25 +12,15 @@
         </div>
 
         <div class="card-body p-4">
-            <!-- Create New Booking Button -->
-            <p>
-                <a asp-action="Create" class="btn btn-success">
-                    <i class="bi bi-plus-circle"></i> Create New Booking
-                </a>
-            </p>
 
             <!-- Booking Table -->
             <table id="tblData" class="table table-bordered table-striped" style="width: 100%;">
                 <thead>
                     <tr>
                         <th>@Html.DisplayNameFor(model => model.CustomerName)</th>
-                        <th>@Html.DisplayNameFor(model => model.PhoneNumber)</th>
                         <th>@Html.DisplayNameFor(model => model.CheckIn)</th>
                         <th>@Html.DisplayNameFor(model => model.CheckOut)</th>
-                        <th>@Html.DisplayNameFor(model => model.NumberOfAdults)</th>
-                        <th>@Html.DisplayNameFor(model => model.NumberOfChildren)</th>
                         <th>@Html.DisplayNameFor(model => model.Status)</th>
-                        <th>@Html.DisplayNameFor(model => model.UserId)</th>
                         <th>Actions</th>
                     </tr>
                 </thead>
@@ -39,15 +29,12 @@
                     {
                         <tr>
                             <td>@Html.DisplayFor(modelItem => item.CustomerName)</td>
-                            <td>@Html.DisplayFor(modelItem => item.PhoneNumber)</td>
                             <td>@Html.DisplayFor(modelItem => item.CheckIn)</td>
                             <td>@Html.DisplayFor(modelItem => item.CheckOut)</td>
-                            <td>@Html.DisplayFor(modelItem => item.NumberOfAdults)</td>
-                            <td>@Html.DisplayFor(modelItem => item.NumberOfChildren)</td>
                             <td>@Html.DisplayFor(modelItem => item.Status)</td>
-                            <td>@Html.DisplayFor(modelItem => item.UserId)</td>
                             <td>
-                                <a asp-action="Edit" asp-route-id="@item.BookingId" class="btn btn-sm btn-outline-secondary">Edit</a> |
+                                <a asp-action="Edit" asp-route-id="@item.BookingId" class="btn btn-sm btn-outline-primary">Edit</a> |
+                                <a asp-action="Details" asp-route-id="@item.BookingId" class="btn btn-sm btn-outline-secondary">Details</a> |
                                 <a asp-action="Delete" asp-route-id="@item.BookingId" class="btn btn-sm btn-outline-danger">Delete</a>
                             </td>
                         </tr>

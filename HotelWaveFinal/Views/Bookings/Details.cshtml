@@ -12,52 +12,81 @@
         <div class="row">
             <div class="col-md-8 offset-md-2">
                 <dl class="row">
+                    <!-- Customer Name -->
                     <dt class="col-sm-4">@Html.DisplayNameFor(model => model.CustomerName)</dt>
                     <dd class="col-sm-8">@Html.DisplayFor(model => model.CustomerName)</dd>
 
-                        <dt class="col-sm-4">@Html.DisplayNameFor(model => model.PhoneNumber)</dt>
-                        <dd class="col-sm-8">@Html.DisplayFor(model => model.PhoneNumber)</dd>
+                    <!-- Phone Number -->
+                    <dt class="col-sm-4">@Html.DisplayNameFor(model => model.PhoneNumber)</dt>
+                    <dd class="col-sm-8">@Html.DisplayFor(model => model.PhoneNumber)</dd>
 
-                        <dt class="col-sm-4">@Html.DisplayNameFor(model => model.CheckIn)</dt>
-                        <dd class="col-sm-8">@Html.DisplayFor(model => model.CheckIn)</dd>
+                    <!-- Check In Date -->
+                    <dt class="col-sm-4">@Html.DisplayNameFor(model => model.CheckIn)</dt>
+                    <dd class="col-sm-8">@Html.DisplayFor(model => model.CheckIn)</dd>
 
-                        <dt class="col-sm-4">@Html.DisplayNameFor(model => model.CheckOut)</dt>
-                        <dd class="col-sm-8">@Html.DisplayFor(model => model.CheckOut)</dd>
+                    <!-- Check Out Date -->
+                    <dt class="col-sm-4">@Html.DisplayNameFor(model => model.CheckOut)</dt>
+                    <dd class="col-sm-8">@Html.DisplayFor(model => model.CheckOut)</dd>
 
-                        <dt class="col-sm-4">@Html.DisplayNameFor(model => model.NumberOfAdults)</dt>
-                        <dd class="col-sm-8">@Html.DisplayFor(model => model.NumberOfAdults)</dd>
+                    <!-- Number of Adults -->
+                    <dt class="col-sm-4">@Html.DisplayNameFor(model => model.NumberOfAdults)</dt>
+                    <dd class="col-sm-8">@Html.DisplayFor(model => model.NumberOfAdults)</dd>
 
-                        <dt class="col-sm-4">@Html.DisplayNameFor(model => model.NumberOfChildren)</dt>
-                        <dd class="col-sm-8">@Html.DisplayFor(model => model.NumberOfChildren)</dd>
+                    <!-- Number of Children -->
+                    <dt class="col-sm-4">@Html.DisplayNameFor(model => model.NumberOfChildren)</dt>
+                    <dd class="col-sm-8">@Html.DisplayFor(model => model.NumberOfChildren)</dd>
 
-                        <dt class="col-sm-4">@Html.DisplayNameFor(model => model.Room)</dt>
-                        <dd class="col-sm-8">@Html.DisplayFor(model => model.Room.RoomId)</dd>
+                    <!-- Room Number (instead of Room ID) -->
+                    <dt class="col-sm-4">@Html.DisplayNameFor(model => model.Room.RoomNumber)</dt>
+                    <dd class="col-sm-8">@Html.DisplayFor(model => model.Room.RoomNumber)</dd>
 
-                        <dt class="col-sm-4">@Html.DisplayNameFor(model => model.Status)</dt>
-                        <dd class="col-sm-8">@Html.DisplayFor(model => model.Status)</dd>
-                    </dl>
+                    <!-- Status -->
+                    <dt class="col-sm-4">@Html.DisplayNameFor(model => model.Status)</dt>
+                    <dd class="col-sm-8">@Html.DisplayFor(model => model.Status)</dd>
 
-                    @if (User.IsInRole(SD.Role_Admin))
-                    {
-                        <div class="text-center">
-                            <a asp-action="Edit" asp-route-id="@Model?.BookingId" class="btn btn-warning mx-2">
-                                <i class="bi bi-pencil"></i> Edit
-                            </a>
-                            <a asp-action="Index" class="btn btn-secondary mx-2">Back to List</a>
-                        </div>
-                    }
-                    else
-                    {
-                        <div class="text-center">
-                            <a asp-area="" asp-controller="Home" asp-action="Index" class="btn btn-secondary mx-2">Go Back Home</a>
-                        </div>
-                    }
-                </div>
+                    <!-- Total Price -->
+                    @* Assuming you have a method to calculate the total price *@
+@*                     <dt class="col-sm-4">Total Price</dt>
+                    <dd class="col-sm-8">
+                        @if (Model.CheckIn != null && Model.CheckOut != null && Model.Room != null)
+                        {
+                            var checkInDate = Model.CheckIn.Value; // Get the CheckIn date
+                            var checkOutDate = Model.CheckOut.Value; // Get the CheckOut date
+                            var totalDays = (checkOutDate - checkInDate).Days; // Subtract the dates
+                            var totalPrice = totalDays * Model.Room.PricePerNight; // Calculate total price
+                            @totalPrice.ToString("C") <!-- Format as currency -->
+                        }
+                        else
+                        {
+                            @:N/A
+                        }
+
+
+                    </dd> *@
+                </dl>
+
+                <!-- Action buttons -->
+                @if (User.IsInRole(SD.Role_Admin))
+                {
+                    <div class="text-center">
+                        <a asp-action="Edit" asp-route-id="@Model?.BookingId" class="btn btn-warning mx-2">
+                            <i class="bi bi-pencil"></i> Edit
+                        </a>
+                        <a asp-action="Index" class="btn btn-secondary mx-2">Back to List</a>
+                    </div>
+                }
+                else
+                {
+                    <div class="text-center">
+                        <a asp-area="" asp-controller="Home" asp-action="Index" class="btn btn-secondary mx-2">Go Back Home</a>
+                    </div>
+                }
             </div>
         </div>
     </div>
 </div>
 
+<!-- CSS for the card and background -->
 <style>
     .overlay {
         position: absolute;
@@ -68,6 +97,7 @@
         background-color: rgba(255, 165, 0, 0.1); /* Dark orange with 30% transparency */
         z-index: 0;
     }
+
     .background-image {
         z-index: -1;
     }

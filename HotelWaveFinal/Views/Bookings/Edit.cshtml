@@ -1,10 +1,12 @@
 ﻿@model HotelWaveFinal.Models.Booking
+@{
+    var room = ViewData["RoomDetails"] as HotelWaveFinal.Models.Room;
+}
 
 <div class="container my-5" style="position: relative; padding: 60px 0;">
     <img src="~/assets/royal-master/image/about_banner.jpg" alt="Background" class="background-image" style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; object-fit: cover; z-index: -1;">
-    <div class="overlay"></div> <!-- Overlay for dark navy color -->
+    <div class="overlay"></div>
     <div class="card shadow border-0 mx-auto" style="width: 85%; border-radius: 10px; box-shadow: 0 4px 20px rgba(0, 0, 0, 0.5);">
-        <!-- Added border radius and shadow -->
         <div class="card-header bg-info bg-gradient py-3">
             <div class="row">
                 <div class="col-12 text-center">
@@ -15,82 +17,100 @@
             </div>
         </div>
         <div class="card-body p-4">
-            <form asp-action="Edit">
-                <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-                <input type="hidden" asp-for="BookingId" />
+            <form asp-action="Edit" class="row" enctype="multipart/form-data">
+                <!-- Hidden fields for Room and Booking -->
+                @* <input type="hidden" asp-for="RoomId" value="@room.RoomId" /> *@
+                <input asp-for="BookingId" hidden />
+                <input asp-for="CustomerName" hidden />
+                <input asp-for="PhoneNumber" hidden />
+                <input asp-for="CheckIn" hidden />
+                <input asp-for="CheckOut" hidden />
+                <input asp-for="NumberOfAdults" hidden />
+                <input asp-for="NumberOfChildren" hidden />
 
-            <!-- Name -->
-            <div class="form-group mb-3">
-                    <label asp-for="CustomerName" class="control-label"></label>
-                    <input asp-for="CustomerName" class="form-control" />
-                    <span asp-validation-for="CustomerName" class="text-danger"></span>
-            </div>
-
-                <!-- Phone number -->
-                <div class="form-group mb-3">
-                    <label asp-for="PhoneNumber" class="control-label"></label>
-                    <input asp-for="PhoneNumber" class="form-control" />
-                    <span asp-validation-for="PhoneNumber" class="text-danger"></span>
+                <!-- Room Information Section -->
+                <div class="row mb-3">
+                    <div class="col-12">
+                        <div class="card shadow-sm p-4">
+                            <h4>Room Details</h4>
+                            <p>Room Number: <strong>@room.RoomNumber</strong></p>
+                            <p>Room Type: <strong>@room.RoomType.TypeName</strong></p>
+                            <p>Price Per Night: <strong>R @room.PricePerNight</strong></p>
+                            <p>Max Adults: <strong>@room.MaxAdults</strong></p>
+                            <p>Max Children: <strong>@room.MaxChildren</strong></p>
+                        </div>
+                    </div>
                 </div>
 
-                <!-- Check-in date -->
-                <div class="form-group mb-3">
-                    <label asp-for="CheckIn" class="control-label"></label>
-                    <input asp-for="CheckIn" class="form-control" />
-                    <span asp-validation-for="CheckIn" class="text-danger"></span>
-                </div>
+                <!-- Booking Information Section (Read-only) -->
+                <div class="border p-3 col-12">
+                    <!-- Customer Name -->
+                    <div class="form-floating py-2 col-12">
+                        <input asp-for="CustomerName" class="form-control border-0 shadow" placeholder="Customer Name" readonly />
+                        <label asp-for="CustomerName" class="ms-2">Full Name</label>
+                    </div>
 
-                <!-- Check-out date -->
-                <div class="form-group mb-3">
-                    <label asp-for="CheckOut" class="control-label"></label>
-                    <input asp-for="CheckOut" class="form-control" />
-                    <span asp-validation-for="CheckOut" class="text-danger"></span>
-                </div>
+                    <!-- Phone Number -->
+                    <div class="form-floating py-2 col-12">
+                        <input asp-for="PhoneNumber" class="form-control border-0 shadow" placeholder="Phone Number" readonly />
+                        <label asp-for="PhoneNumber" class="ms-2">Phone Number</label>
+                    </div>
 
-                <!-- Number of Adults -->
-                <div class="form-group mb-3">
-                    <label asp-for="NumberOfAdults" class="control-label"></label>
-                    <input asp-for="NumberOfAdults" class="form-control" />
-                    <span asp-validation-for="NumberOfAdults" class="text-danger"></span>
-                </div>
+                    <!-- Check-in Date -->
+                    <div class="form-floating py-2 col-12">
+                        <input asp-for="CheckIn" type="date" class="form-control border-0 shadow" readonly />
+                        <label asp-for="CheckIn" class="ms-2">Check-in Date</label>
+                    </div>
 
-                <!-- Number of Children -->
-                <div class="form-group mb-3">
-                    <label asp-for="NumberOfChildren" class="control-label"></label>
-                    <input asp-for="NumberOfChildren" class="form-control" />
-                    <span asp-validation-for="NumberOfChildren" class="text-danger"></span>
-                </div>
+                    <!-- Check-out Date -->
+                    <div class="form-floating py-2 col-12">
+                        <input asp-for="CheckOut" type="date" class="form-control border-0 shadow" readonly />
+                        <label asp-for="CheckOut" class="ms-2">Check-out Date</label>
+                    </div>
 
-                <!-- Room -->
-                <div class="form-group mb-3">
-                    <label asp-for="RoomId" class="control-label"></label>
-                    <select asp-for="RoomId" class="form-control" asp-items="ViewBag.RoomId"></select>
-                    <span asp-validation-for="RoomId" class="text-danger"></span>
-                </div>
+                    <!-- Number of Adults -->
+                    <div class="form-floating py-2 col-12">
+                        <input asp-for="NumberOfAdults" class="form-control border-0 shadow" type="number" readonly />
+                        <label asp-for="NumberOfAdults" class="ms-2">Number of Adults</label>
+                    </div>
 
-                <!-- Status -->
-                <div class="form-group mb-3">
-                    <label asp-for="Status" class="control-label"></label>
-                    <input asp-for="Status" class="form-control" />
-                    <span asp-validation-for="Status" class="text-danger"></span>
-                </div>
+                    <!-- Number of Children -->
+                    <div class="form-floating py-2 col-12">
+                        <input asp-for="NumberOfChildren" class="form-control border-0 shadow" type="number" readonly />
+                        <label asp-for="NumberOfChildren" class="ms-2">Number of Children</label>
+                    </div>
 
-                <!-- UserId Dropdown (if needed) -->
-                <div class="form-group mb-3">
-                    <label asp-for="UserId" class="control-label"></label>
-                    <select asp-for="UserId" class="form-control" asp-items="ViewBag.UserId"></select>
-                    <span asp-validation-for="UserId" class="text-danger"></span>
-                </div>
+                    <!-- Status Field (Editable) -->
+                    <div class="form-floating py-2 col-12">
+                        <select asp-for="Status" class="form-control border-0 shadow">
+                            <option value="Pending">Pending</option>
+                            <option value="Confirmed">Confirmed</option>
+                            <option value="Checked-In">Checked-In</option>
+                            <option value="Checked-Out">Checked-Out</option>
+                            <option value="Cancelled">Cancelled</option>
+                        </select>
+                        <label asp-for="Status" class="ms-2">Status</label>
+                        <span asp-validation-for="Status" class="text-danger"></span>
+                    </div>
 
-                <!-- Submit and Back buttons -->
-                <div class="form-group text-center">
-                    <input type="submit" value="Save" class="btn btn-success mx-2" />
-                    <a asp-action="Index" class="btn btn-secondary mx-2">Back to List</a>
+                    <!-- Submit button -->
+                    <div class="row pt-2">
+                        <div class="col-6 col-md-3">
+                            <button type="submit" class="btn btn-primary form-control">Update Booking</button>
+                        </div>
+                        <div class="col-6 col-md-3">
+                            <a asp-controller="Home" asp-action="Index" class="btn btn-outline-primary form-control">Back to Home</a>
+                        </div>
+                    </div>
                 </div>
             </form>
         </div>
     </div>
 </div>
+
+@section Scripts {
+    @await Html.PartialAsync("_ValidationScriptsPartial")
+}
 
 <style>
     .overlay {
@@ -102,6 +122,7 @@
         background-color: rgba(255, 165, 0, 0.1); /* Dark orange with 30% transparency */
         z-index: 0;
     }
+
     .background-image {
         z-index: -1;
     }

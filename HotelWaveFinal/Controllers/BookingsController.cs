@@ -50,13 +50,23 @@ namespace HotelWaveFinal.Controllers
 
         // GET: Bookings/Create
         [Authorize]
-        public IActionResult Create()
+        public IActionResult Create(int roomId)
         {
             // Fetch only available rooms
             var availableRooms = _context.Rooms
                 .Where(r => r.IsAvailable) // Filter rooms where IsAvailable is true
                 .Select(r => new { r.RoomId, r.RoomNumber })
                 .ToList();
+
+            var room = _context.Rooms.Include(r => r.RoomType).FirstOrDefault(r => r.RoomId == roomId);
+
+
+            if (room == null)
+            {
+                return NotFound();
+            }
+
+            ViewData["RoomDetails"] = room;
 
             // Populate the ViewData for the Room dropdown
             ViewData["RoomId"] = new SelectList(availableRooms, "RoomId", "RoomNumber"); // Display RoomNumber in dropdown
@@ -88,26 +98,29 @@ namespace HotelWaveFinal.Controllers
                             (b.CheckIn < booking.CheckOut && b.CheckOut > booking.CheckIn))
                 .Any();
 
-            // Validate number of adults and children against room capacity
-            //if (booking.NumberOfAdults > room.MaxAdults)
-            //{
-            //    ModelState.AddModelError("NumberOfAdults", $"The selected room can only accommodate up to {room.MaxAdults} adults.");
-            //}
+            var room = await _context.Rooms.FirstOrDefaultAsync(r => r.RoomId == booking.RoomId);
 
-            //if (booking.NumberOfChildren > room.MaxChildren)
-            //{
-            //    ModelState.AddModelError("NumberOfChildren", $"The selected room can only accommodate up to {room.MaxChildren} children.");
-
-            //    if (roomBooked)
-            //{
-            //    ModelState.AddModelError("RoomId", "The selected room is already booked for the selected dates.");
-            //}
-
-
-
-            if (!ModelState.IsValid)
+            //Validate number of adults and children against room capacity
+            if (booking.NumberOfAdults > room.MaxAdults)
             {
-                var room = await _context.Rooms.FindAsync(booking.RoomId);
+                ModelState.AddModelError("NumberOfAdults", $"The selected room can only accommodate up to {room.MaxAdults} adults.");
+            }
+
+            if (booking.NumberOfChildren > room.MaxChildren)
+            {
+                ModelState.AddModelError("NumberOfChildren", $"The selected room can only accommodate up to {room.MaxChildren} children.");
+
+                if (roomBooked)
+                {
+                    ModelState.AddModelError("RoomId", "The selected room is already booked for the selected dates.");
+                }
+            }
+
+
+
+                if (!ModelState.IsValid)
+            {
+                //var room = await _context.Rooms.FindAsync(booking.RoomId);
                 if (room != null)
                 {
                     double adultRate = 1.0;
@@ -157,54 +170,76 @@ namespace HotelWaveFinal.Controllers
 
         // GET: Bookings/Edit/5
         [Authorize(Roles = SD.Role_Admin)]
-        public async Task<IActionResult> Edit(int? id)
+        public IActionResult Edit(int id)
         {
-            if (id == null)
-            {
-                return NotFound();
-            }
-
-            var booking = await _context.Bookings.FindAsync(id);
+            var booking = _context.Bookings.Find(id);
             if (booking == null)
             {
                 return NotFound();
             }
 
-            // Populate the dropdown for Status
-            ViewBag.StatusList = new SelectList(new List<string> { "Pending", "Confirmed", "Checked-In", "Checked-Out", "Cancelled" }, booking.Status);
+            if (booking.RoomId == null)
+            {
+                // Handle the case where RoomId is null
+                return BadRequest("The booking does not have an associated room.");
+            }
 
-            ViewData["UserId"] = new SelectList(await _context.Users.ToListAsync(), "Id", "UserName", booking.UserId);
-            ViewData["RoomId"] = new SelectList(_context.Rooms, "RoomId", "RoomId", booking.RoomId);
+            // Now, try to get the room based on RoomId from the booking
+            var room = _context.Rooms.Include(r => r.RoomType)
+                                     .FirstOrDefault(r => r.RoomId == booking.RoomId);
+
+            if (room == null)
+            {
+                return NotFound("The room associated with this booking was not found.");
+            }
+
+            ViewData["RoomDetails"] = room;  // Ensure RoomDetails is being set.
             return View(booking);
         }
+
+
+
+
+
+
 
         // POST: Bookings/Edit/5
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("BookingId,CustomerName,PhoneNumber,CheckIn,CheckOut,NumberOfAdults,NumberOfChildren,RoomId,Status")] Booking updatedBooking)
+        public async Task<IActionResult> Edit(int id, [Bind("BookingId,RoomId,Status")] Booking updatedBooking)
         {
             if (id != updatedBooking.BookingId)
             {
                 return NotFound();
             }
 
-            if (!ModelState.IsValid)
+            if (ModelState.IsValid)
             {
                 try
                 {
+                    var roomDetails = await _context.Rooms.FindAsync(updatedBooking.RoomId);
+                    if (roomDetails != null)
+                    {
+                        ViewData["RoomDetails"] = roomDetails;
+                    }
+                    // Retrieve the existing booking
                     var existingBooking = await _context.Bookings.FindAsync(id);
                     if (existingBooking == null)
                     {
                         return NotFound();
                     }
 
-                    // Preserve the original UserId
-                    updatedBooking.UserId = existingBooking.UserId;
+                    // Update only the fields you want to modify (Status in this case)
+                    existingBooking.Status = updatedBooking.Status;
+                    existingBooking.RoomId = updatedBooking.RoomId; // Update RoomId if it's part of the form
 
-                    _context.Entry(existingBooking).CurrentValues.SetValues(updatedBooking);
+
+
+                    // Save the changes to the database
+                    _context.Update(existingBooking);
                     await _context.SaveChangesAsync();
 
-                    TempData["success"] = "Booking updated Successfully";
+                    TempData["success"] = "Booking updated successfully!";
                     return RedirectToAction(nameof(Index));
                 }
                 catch (DbUpdateConcurrencyException)
@@ -220,11 +255,15 @@ namespace HotelWaveFinal.Controllers
                 }
             }
 
-            ViewBag.StatusList = new SelectList(new List<string> { "Pending", "Confirmed", "Checked-In", "Checked-Out", "Cancelled"}, updatedBooking.Status);
-            ViewData["RoomId"] = new SelectList(_context.Rooms, "RoomId", "RoomId", updatedBooking.RoomId);
-            ViewData["UserId"] = new SelectList(await _context.Users.ToListAsync(), "Id", "UserName", updatedBooking.UserId);
-            return View(updatedBooking);
+            // Repopulate the dropdowns if validation fails
+            ViewBag.StatusList = new SelectList(new List<string> { "Pending", "Confirmed", "Checked-In", "Checked-Out", "Cancelled" }, updatedBooking.Status);
+            ViewData["RoomList"] = new SelectList(_context.Rooms, "RoomId", "RoomNumber", updatedBooking.RoomId);
+
+            return View(updatedBooking); // Return the form with errors highlighted
         }
+
+
+
 
 
 

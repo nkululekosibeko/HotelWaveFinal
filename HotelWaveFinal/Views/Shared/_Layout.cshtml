@@ -47,9 +47,6 @@
                         @if (User.IsInRole(SD.Role_Cust))
                         {
                             <li class="nav-item">
-                                <a class="nav-link text-dark" asp-area="" asp-controller="Bookings" asp-action="Create">Make Booking</a>
-                            </li>
-                            <li class="nav-item">
                                 <a class="nav-link text-dark" asp-area="" asp-controller="Bookings" asp-action="MyBookings">My Bookings</a>
                             </li>
                         }
