@@ -305,7 +305,7 @@ namespace HotelWaveFinal.Controllers
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
             var booking = await _context.Bookings.FindAsync(id);
-            if (booking != null)
+             if (booking != null)
             {
                 _context.Bookings.Remove(booking);
             }
