@@ -82,11 +82,6 @@ namespace HotelWaveFinal.Controllers
         {
             var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
 
-            if (booking.CheckOut <= booking.CheckIn)
-            {
-                ModelState.AddModelError("CheckOut", "Check-out date must be later than check-in date.");
-            }
-
             if (string.IsNullOrEmpty(userId))
             {
                 ModelState.AddModelError("UserId", "User ID could not be retrieved. Please log in again.");
@@ -120,25 +115,31 @@ namespace HotelWaveFinal.Controllers
 
                 if (!ModelState.IsValid)
             {
+                if (booking.CheckOut.ToDateTime(TimeOnly.MinValue) <= booking.CheckIn.ToDateTime(TimeOnly.MinValue))
+                {
+                    ModelState.AddModelError("CheckOut", "Check-out date must be later than the check-in date.");
+                }
+
                 //var room = await _context.Rooms.FindAsync(booking.RoomId);
                 if (room != null)
                 {
+                    var numberOfDays = (booking.CheckOut.ToDateTime(TimeOnly.MinValue) - booking.CheckIn.ToDateTime(TimeOnly.MinValue)).Days;
+
+                    // Calculate total cost
                     double adultRate = 1.0;
                     double childRate = 0.5;
 
-                    booking.TotalCost = room.PricePerNight * ( booking.NumberOfChildren * childRate);
+                    // Base room price is for adults, and children are charged separately
+                    booking.TotalCost = (room.PricePerNight * numberOfDays) + (booking.NumberOfChildren * room.PricePerNight * childRate * numberOfDays);
 
+
+                    booking.Status = "Pending";
                     // Mark the room as unavailable
                     room.IsAvailable = false;
                     _context.Update(room);
                 }
 
                 booking.UserId = userId;
-
-                if (!User.IsInRole("Admin"))
-                {
-                    booking.Status = "Pending";
-                }
 
                 _context.Add(booking);
                 await _context.SaveChangesAsync();
@@ -324,5 +325,38 @@ namespace HotelWaveFinal.Controllers
         {
             return _context.Bookings.Any(e => e.BookingId == id);
         }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> Cancel(int id)
+        {
+            // Find the booking by id
+            var booking = await _context.Bookings.FirstOrDefaultAsync(b => b.BookingId == id);
+
+            // Check if the booking exists
+            if (booking == null)
+            {
+                return NotFound();
+            }
+
+            // Ensure that the user is authorized to cancel this booking
+            var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+            if (booking.Status == "Pending" && booking.UserId == userId)
+            {
+                // Change the booking status to 'Cancelled'
+                booking.Status = "Cancelled";
+                await _context.SaveChangesAsync(); // Use SaveChangesAsync for async
+
+                TempData["Success"] = "Booking cancelled successfully.";
+            }
+            else
+            {
+                TempData["Error"] = "You can only cancel pending bookings that you made.";
+            }
+
+            // Redirect back to the booking details or list page
+            return RedirectToAction("Details", new { id = booking.BookingId });
+        }
+
     }
 }

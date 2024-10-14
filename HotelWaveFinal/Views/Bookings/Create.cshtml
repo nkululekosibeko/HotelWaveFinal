@@ -17,7 +17,7 @@
             </div>
         </div>
         <div class="card-body p-4">
-            <form asp-action="Create" class="row" enctype="multipart/form-data">
+            <form asp-action="Create" class="row" enctype="multipart/form-data" id="bookingForm">
                 <!-- Hidden fields for Room and Booking -->
                 <input type="hidden" asp-for="RoomId" value="@room.RoomId" />
                 <input asp-for="BookingId" hidden />
@@ -55,7 +55,7 @@
 
                     <!-- Check-in date -->
                     <div class="form-floating py-2 col-12">
-                        <input asp-for="CheckIn" type="date" class="form-control border-0 shadow" min="@DateTime.Now.ToString("yyyy-MM-dd")" />
+                        <input asp-for="CheckIn" type="date" class="form-control border-0 shadow" id="checkInDate" min="@DateTime.Now.ToString("yyyy-MM-dd")" />
                         <label asp-for="CheckIn" class="ms-2">Check-in Date</label>
                         <span asp-validation-for="CheckIn" class="text-danger"></span>
                     </div>
@@ -104,6 +104,17 @@
         document.getElementById("checkInDate").addEventListener("change", function () {
             var checkInDate = document.getElementById("checkInDate").value;
             document.getElementById("checkOutDate").setAttribute("min", checkInDate);
+        });
+
+        // Add client-side validation for check-in and check-out dates
+        document.getElementById("bookingForm").addEventListener("submit", function (event) {
+            var checkInDate = new Date(document.getElementById("checkInDate").value);
+            var checkOutDate = new Date(document.getElementById("checkOutDate").value);
+
+            if (checkOutDate <= checkInDate) {
+                event.preventDefault(); // Prevent form submission
+                alert("Check-out date must be later than the check-in date.");
+            }
         });
     </script>
 }

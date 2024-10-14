@@ -4,7 +4,8 @@
     <!-- Background Image -->
     <img src="~/assets/royal-master/image/about_banner.jpg" alt="Background"
          class="background-image" style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; object-fit: cover; z-index: -1;">
-    <div class="overlay"></div> <!-- Overlay for dark navy color -->
+    <div class="overlay"></div>
+
     <!-- Card for the booking details -->
     <div class="card shadow border-0 mx-auto" style="width: 85%; border-radius: 10px; box-shadow: 0 4px 20px rgba(0, 0, 0, 0.5);">
         <div class="card-header bg-info bg-gradient py-3 text-center">
@@ -15,56 +16,57 @@
             <div class="row">
                 <div class="col-md-8 offset-md-2">
                     <dl class="row">
-                        <!-- Customer Name -->
-                        <dt class="col-sm-4">@Html.DisplayNameFor(model => model.CustomerName)</dt>
+                        <!-- Custom Label for Customer Name -->
+                        <dt class="col-sm-4 fw-bold text-muted">Customer Name</dt>
                         <dd class="col-sm-8">@Html.DisplayFor(model => model.CustomerName)</dd>
 
-                        <!-- Phone Number -->
-                        <dt class="col-sm-4">@Html.DisplayNameFor(model => model.PhoneNumber)</dt>
+                        <!-- Custom Label for Phone Number -->
+                        <dt class="col-sm-4 fw-bold text-muted">Phone Number</dt>
                         <dd class="col-sm-8">@Html.DisplayFor(model => model.PhoneNumber)</dd>
 
-                        <!-- Check In Date -->
-                        <dt class="col-sm-4">@Html.DisplayNameFor(model => model.CheckIn)</dt>
+                        <!-- Custom Label for Check-In Date -->
+                        <dt class="col-sm-4 fw-bold text-muted">Check-In Date</dt>
                         <dd class="col-sm-8">@Html.DisplayFor(model => model.CheckIn)</dd>
 
-                        <!-- Check Out Date -->
-                        <dt class="col-sm-4">@Html.DisplayNameFor(model => model.CheckOut)</dt>
+                        <!-- Custom Label for Check-Out Date -->
+                        <dt class="col-sm-4 fw-bold text-muted">Check-Out Date</dt>
                         <dd class="col-sm-8">@Html.DisplayFor(model => model.CheckOut)</dd>
 
-                        <!-- Number of Adults -->
-                        <dt class="col-sm-4">@Html.DisplayNameFor(model => model.NumberOfAdults)</dt>
+                        <!-- Custom Label for Number of Adults -->
+                        <dt class="col-sm-4 fw-bold text-muted">Adults</dt>
                         <dd class="col-sm-8">@Html.DisplayFor(model => model.NumberOfAdults)</dd>
 
-                        <!-- Number of Children -->
-                        <dt class="col-sm-4">@Html.DisplayNameFor(model => model.NumberOfChildren)</dt>
+                        <!-- Custom Label for Number of Children -->
+                        <dt class="col-sm-4 fw-bold text-muted">Children</dt>
                         <dd class="col-sm-8">@Html.DisplayFor(model => model.NumberOfChildren)</dd>
 
-                        <!-- Room Number -->
-                        <dt class="col-sm-4">Room Number</dt>
+                        <!-- Custom Label for Room Number -->
+                        <dt class="col-sm-4 fw-bold text-muted">Room Number</dt>
                         <dd class="col-sm-8">@Html.DisplayFor(model => model.Room.RoomNumber)</dd>
 
-                        <!-- Status -->
-                        <dt class="col-sm-4">@Html.DisplayNameFor(model => model.Status)</dt>
+                        <!-- Custom Label for Status -->
+                        <dt class="col-sm-4 fw-bold text-muted">Booking Status</dt>
                         <dd class="col-sm-8">@Html.DisplayFor(model => model.Status)</dd>
-                        <!-- Total Cost -->
-                        <dt class="col-sm-4">@Html.DisplayNameFor(model => model.TotalCost)</dt>
+
+                        <!-- Custom Label for Total Cost -->
+                        <dt class="col-sm-4 fw-bold text-muted">Total Cost</dt>
                         <dd class="col-sm-8">R @Html.DisplayFor(model => model.TotalCost)</dd>
-
-
-                        @*                         <dt class="col-sm-4">@Html.DisplayNameFor(model => model.UserId)</dt>
-                        <dd class="col-sm-8">@Html.DisplayFor(model => model.UserId)</dd> *@
-
-
                     </dl>
 
                     <!-- Action buttons -->
-                    <div class="text-center">
-                        @if (User.IsInRole(SD.Role_Admin))
+                    <div class="text-center mt-4">
+                        @if (!User.IsInRole(SD.Role_Admin))
                         {
-                            <a asp-action="Edit" asp-route-id="@Model?.BookingId" class="btn btn-warning mx-2">
-                                <i class="bi bi-pencil"></i> Edit
-                            </a>
-                            <a asp-action="Index" class="btn btn-secondary mx-2">Back to List</a>
+                            @if (Model.Status == "Pending")
+                            {
+                                <form asp-action="Cancel" asp-route-id="@Model.BookingId" method="post" class="d-inline">
+                                    <button type="submit" class="btn btn-danger mx-2" onclick="return confirm('Are you sure you want to cancel this booking?');">
+                                        <i class="bi bi-x-circle"></i> Cancel Booking
+                                    </button>
+                                    @Html.AntiForgeryToken()
+                                </form>
+                            }
+                            <a asp-area="" asp-controller="Home" asp-action="Index" class="btn btn-secondary mx-2">Go Back Home</a>
                         }
                         else
                         {
@@ -76,20 +78,3 @@
         </div>
     </div>
 </div>
-
-<!-- CSS for the card and background -->
-<style>
-    .overlay {
-        position: absolute;
-        top: 0;
-        left: 0;
-        width: 100%;
-        height: 100%;
-        background-color: rgba(0, 0, 0, 0.3); /* Dark overlay with 30% transparency */
-        z-index: 0;
-    }
-
-    .background-image {
-        z-index: -1;
-    }
-</style>

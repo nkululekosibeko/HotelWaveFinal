@@ -46,6 +46,8 @@ namespace HotelWaveFinal.Controllers
 
             return View(room);
         }
+
+
         [Authorize(Roles = SD.Role_Admin)]
         // GET: Rooms/Create
         public IActionResult Create()
@@ -55,15 +57,16 @@ namespace HotelWaveFinal.Controllers
             return View();
         }
 
-        // POST: Room/Create
+        // POST: Rooms/Create
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create(Room room)
+        public async Task<IActionResult> Create([Bind("RoomId,RoomNumber,IsAvailable,PricePerNight,RoomTypeId")] Room room)
         {
-            if (!ModelState.IsValid)
+            if (ModelState.IsValid)
             {
                 _context.Add(room);
                 await _context.SaveChangesAsync();
+                TempData["success"] = "Room created Successfully";
                 return RedirectToAction(nameof(Index));
             }
 
@@ -71,6 +74,7 @@ namespace HotelWaveFinal.Controllers
             ViewBag.RoomTypeId = new SelectList(_context.RoomTypes.ToList(), "RoomTypeId", "TypeName", room.RoomTypeId);
             return View(room);
         }
+
 
 
 
@@ -215,21 +219,5 @@ namespace HotelWaveFinal.Controllers
             // Pass the rooms list to the view
             return View(rooms);
         }
-
-        public IActionResult Create(int? roomId)
-        {
-            // Fetch available rooms again for dropdown if necessary
-            var availableRooms = _context.Rooms
-                .Where(r => r.IsAvailable)
-                .Select(r => new { r.RoomId, r.RoomNumber })
-                .ToList();
-
-            // Pre-select the room if roomId is provided
-            ViewData["RoomId"] = new SelectList(availableRooms, "RoomId", "RoomNumber", roomId);
-            return View();
-        }
-
-
-
     }
 }

@@ -32,22 +32,11 @@
                             <td>@Html.DisplayFor(modelItem => item.CheckIn)</td>
                             <td>@Html.DisplayFor(modelItem => item.CheckOut)</td>
                             <td>@Html.DisplayFor(modelItem => item.Status)</td>
-
                             <td>
-                                @if (item.Status == "Check-Out" || item.Status == "Cancelled")
-                                {
-                                    <a asp-action="Details" asp-route-id="@item.BookingId" class="btn btn-sm btn-outline-secondary">Details</a>
-                                    <a asp-action="Delete" asp-route-id="@item.BookingId" class="btn btn-sm btn-outline-danger">Delete</a>
-                                }
-                                else
-                                {
-                                <a asp-action="Edit" asp-route-id="@item.BookingId" class="btn btn-sm btn-outline-primary">Edit</a> 
-                                <a asp-action="Details" asp-route-id="@item.BookingId" class="btn btn-sm btn-outline-secondary">Details</a> 
+                                <a asp-action="Edit" asp-route-id="@item.BookingId" class="btn btn-sm btn-outline-primary">Edit</a> |
+                                <a asp-action="Details" asp-route-id="@item.BookingId" class="btn btn-sm btn-outline-secondary">Details</a> |
                                 <a asp-action="Delete" asp-route-id="@item.BookingId" class="btn btn-sm btn-outline-danger">Delete</a>
-                                }
-
                             </td>
-
                         </tr>
                     }
                 </tbody>
