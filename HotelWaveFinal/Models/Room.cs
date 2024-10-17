@@ -14,8 +14,9 @@ namespace HotelWaveFinal.Models
         public double PricePerNight { get; set; }
         public int MaxAdults { get; set; }
         public int MaxChildren { get; set; }
+        [ValidateNever]
 
-        public List<Booking> Bookings { get; set; }
+        public List<Booking>? Bookings { get; set; }
 
         public int RoomTypeId { get; set; }  // Here i am Creating Foreign Keys.
         [ForeignKey("RoomTypeId")]

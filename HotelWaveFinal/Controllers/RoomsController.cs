@@ -60,7 +60,7 @@ namespace HotelWaveFinal.Controllers
         // POST: Rooms/Create
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("RoomId,RoomNumber,IsAvailable,PricePerNight,RoomTypeId")] Room room)
+        public async Task<IActionResult> Create([Bind("RoomId,RoomNumber,IsAvailable,PricePerNight,MaxAdults,MaxChildren,RoomTypeId")] Room room)
         {
             if (ModelState.IsValid)
             {
@@ -103,7 +103,7 @@ namespace HotelWaveFinal.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("RoomId,RoomNumber,IsAvailable,PricePerNight,RoomTypeId")] Room room)
+        public async Task<IActionResult> Edit(int id, [Bind("RoomId,RoomNumber,IsAvailable,PricePerNight,MaxAdults,MaxChildren,RoomTypeId")] Room room)
         {
             if (id != room.RoomId)
             {
@@ -132,7 +132,7 @@ namespace HotelWaveFinal.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["RoomTypeId"] = new SelectList(_context.RoomTypes, "RoomTypeId", "RoomTypeId", room.RoomTypeId);
+            ViewBag.RoomTypeId = new SelectList(_context.RoomTypes.ToList(), "RoomTypeId", "TypeName", room.RoomTypeId);
             return View(room);
         }
 
