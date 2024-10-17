@@ -1,0 +1,73 @@
+﻿@* @model Thuthuka_Construction.Models.Payment
+
+@{
+    ViewData["Title"] = "Create Payment";
+}
+
+<div class="card shadow border-0 my-4">
+    <div class="card-header bg-secondary bg-gradient ml-0 py-3">
+        <div class="row">
+            <div class="col-12 text-center">
+                <h2 class="text-white py-2">Create Payment</h2>
+            </div>
+        </div>
+    </div>
+
+    <div class="card-body p-4">
+        <form asp-action="Create" class="row">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+
+            <div class="border p-3">
+                <div class="form-floating py-2 col-12">
+                    <input asp-for="PaymentType" class="form-control border-0 shadow" />
+                    <label asp-for="PaymentType" class="ms-2">Payment Type</label>
+                    <span asp-validation-for="PaymentType" class="text-danger"></span>
+                </div>
+
+                <div class="form-floating py-2 col-12">
+                    <input asp-for="Amount" class="form-control border-0 shadow" />
+                    <label asp-for="Amount" class="ms-2">Amount</label>
+                    <span asp-validation-for="Amount" class="text-danger"></span>
+                </div>
+
+                <div class="form-floating py-2 col-12">
+                    <input asp-for="PaymentDate" class="form-control border-0 shadow" />
+                    <label asp-for="PaymentDate" class="ms-2">Payment Date</label>
+                    <span asp-validation-for="PaymentDate" class="text-danger"></span>
+                </div>
+
+                <div class="form-floating py-2 col-12">
+                    <select asp-for="CustomerId" class="form-control border-0 shadow" asp-items="ViewBag.CustomerId"></select>
+                    <label asp-for="CustomerId" class="ms-2">Customer</label>
+                </div>
+
+                <div class="form-floating py-2 col-12">
+                    <select asp-for="CustomerProjectId" class="form-control border-0 shadow" asp-items="ViewBag.CustomerProjectId"></select>
+                    <label asp-for="CustomerProjectId" class="ms-2">Customer Project</label>
+                </div>
+
+                <div class="form-floating py-2 col-12">
+                    <input asp-for="Status" class="form-control border-0 shadow" />
+                    <label asp-for="Status" class="ms-2">Status</label>
+                    <span asp-validation-for="Status" class="text-danger"></span>
+                </div>
+
+                <div class="row pt-3">
+                    <div class="col-6 col-md-3">
+                        <input type="submit" value="Create" class="btn btn-primary form-control" />
+                    </div>
+                    <div class="col-6 col-md-3">
+                        <a asp-action="Index" class="btn btn-outline-primary form-control">Back to List</a>
+                    </div>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+}
+ *@

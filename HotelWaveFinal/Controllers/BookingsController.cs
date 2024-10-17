@@ -144,11 +144,16 @@ namespace HotelWaveFinal.Controllers
                 _context.Add(booking);
                 await _context.SaveChangesAsync();
                 TempData["success"] = "Booking Created Successfully";
-                return RedirectToAction("Details", new { id = booking.BookingId });
+
+                var BookingId = booking.BookingId;
+                return RedirectToAction("CreatePayment", "Payments", new { userId = userId, projectId = BookingId, amount = booking.TotalCost });
+
+                //return RedirectToAction("Details", new { id = booking.BookingId });
             }
 
             ViewData["RoomId"] = new SelectList(_context.Rooms, "RoomId", "RoomNumber", booking.RoomId);
             return View(booking);
+
         }
 
 

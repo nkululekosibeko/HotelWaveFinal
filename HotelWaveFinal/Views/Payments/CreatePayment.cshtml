@@ -1,0 +1,96 @@
+﻿@model HotelWaveFinal.Models.Payment
+
+<div class="container my-5" style="position: relative; padding: 60px 0;">
+    <!-- Background Image -->
+    <img src="~/assets/royal-master/image/about_banner.jpg" alt="Background"
+         class="background-image" style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; object-fit: cover; z-index: -1;">
+    <div class="overlay"></div> <!-- Overlay for dark navy color -->
+    <!-- Card for payment creation -->
+    <div class="card shadow border-0 mx-auto" style="width: 85%; border-radius: 10px; box-shadow: 0 4px 20px rgba(0, 0, 0, 0.5);">
+        <div class="card-header bg-secondary bg-gradient py-3 text-center">
+            <h2 class="text-white mb-0">Create Payment</h2>
+        </div>
+        <div class="card-body p-4">
+            <form asp-action="ProcessPayment" method="post">
+                @* Hidden fields for BookingId and UserId *@
+                <input type="hidden" asp-for="BookingId" />
+                <input type="hidden" asp-for="UserId" />
+                <input type="hidden" asp-for="PaymentDate" />
+
+@*                 <div class="form-floating py-2">
+                    <input asp-for="Amount" class="form-control border-0 shadow" placeholder="Amount" />
+                    <label asp-for="Amount" class="ms-2">Amount</label>
+                    <span asp-validation-for="Amount" class="text-danger"></span>
+                </div> *@
+                <div class="form-floating py-2 col-12">
+                    <p class="form-control border-0 shadow bg-light">@Model.Amount.ToString("C")</p>
+                    <label>Total Amount Due</label>
+                </div>
+                
+                <div class="form-floating py-2">
+                <input asp-for="AccountNumber" class="form-control border-0 shadow" placeholder="Account Number" />
+                <label asp-for="AccountNumber" class="ms-2">Account Number</label>
+                <span asp-validation-for="AccountNumber" class="text-danger"></span>
+                </div>
+
+
+                <div class="form-floating py-2">
+                    <select asp-for="PaymentMethod" class="form-select border-0 shadow">
+                        <option disabled selected>--Select Payment Method--</option>
+                        <option value="CreditCard">Credit Card</option>
+                        <option value="BankTransfer">Bank Transfer</option>
+                    </select>
+                    <label asp-for="PaymentMethod" class="ms-2">Payment Method</label>
+                    <span asp-validation-for="PaymentMethod" class="text-danger"></span>
+                </div>
+
+
+                <div class="row">
+                    <div class="form-floating py-2 col-md-6">
+                        <input asp-for="ExpirationDate" class="form-control border-0 shadow" placeholder="Expiration Date (MM/YY)" />
+                        <label asp-for="ExpirationDate" class="ms-2">Expiration Date (MM/YY)</label>
+                        <span asp-validation-for="ExpirationDate" class="text-danger"></span>
+                    </div>
+
+                    <div class="form-floating py-2 col-md-6">
+                        <input asp-for="CVV" class="form-control border-0 shadow" placeholder="CVV" />
+                        <label asp-for="CVV" class="ms-2">CVV</label>
+                        <span asp-validation-for="CVV" class="text-danger"></span>
+                    </div>
+                </div>
+
+                <div class="row pt-2">
+                    <div class="col-6 col-md-3">
+                        <button type="submit" class="btn btn-primary form-control">Create Payment</button>
+                    </div>
+                    <div class="col-6 col-md-3">
+                        <a asp-action="Index" class="btn btn-outline-secondary border form-control">Back to List</a>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<!-- CSS Styling for background image and overlay -->
+<style>
+    .overlay {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background-color: rgba(0, 0, 0, 0.3); /* Dark overlay with 30% transparency */
+        z-index: 0;
+    }
+
+    .background-image {
+        z-index: -1;
+    }
+</style>
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+}
