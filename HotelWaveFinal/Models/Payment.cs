@@ -22,7 +22,7 @@ namespace HotelWaveFinal.Models
 
         [Required(ErrorMessage = "Payment status is required.")]
         [Display(Name = "Payment Status")]
-        public string PaymentStatus { get; set; }
+        public string PaymentStatus { get; set; } = "Pending";
 
         [Display(Name = "Booking Id")]
         public int BookingId { get; set; }

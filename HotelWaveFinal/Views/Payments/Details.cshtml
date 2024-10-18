@@ -1,94 +1,48 @@
 ﻿@model HotelWaveFinal.Models.Payment
 
-@{
-    ViewData["Title"] = "Payment Details";
-}
+<div class="container my-5" style="position: relative; padding: 60px 0;">
+    <!-- Background Image -->
+    <img src="~/assets/royal-master/image/about_banner.jpg" alt="Background"
+         class="background-image" style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; object-fit: cover; z-index: -1;">
+    <div class="overlay"></div>
 
-<div class="card shadow border-0 my-4">
-    <div class="card-header bg-secondary bg-gradient ml-0 py-3">
-        <div class="row">
-            <div class="col-12 text-center">
-                <h2 class="text-white py-2">Payment Details</h2>
-            </div>
+    <!-- Card for Payment Details -->
+    <div class="card shadow border-0 mx-auto" style="width: 85%; border-radius: 10px; box-shadow: 0 4px 20px rgba(0, 0, 0, 0.5);">
+        <div class="card-header bg-info bg-gradient py-3 text-center">
+            <h2 class="text-white py-2">Payment Details</h2>
         </div>
-    </div>
 
-    <div class="card-body p-4">
-        <dl class="row">
-            <dt class="col-sm-4">
-                @Html.DisplayNameFor(model => model.PaymentMethod)
-            </dt>
-            <dd class="col-sm-8">
-                @Html.DisplayFor(model => model.PaymentMethod)
-            </dd>
+        <div class="card-body p-4">
+            <div class="row">
+                <div class="col-md-8 offset-md-2">
+                    <dl class="row">
+                        <dt class="col-sm-4 fw-bold text-muted">@Html.DisplayNameFor(model => model.PaymentMethod)</dt>
+                        <dd class="col-sm-8">@Html.DisplayFor(model => model.PaymentMethod)</dd>
 
-            <dt class="col-sm-4">
-                @Html.DisplayNameFor(model => model.Amount)
-            </dt>
-            <dd class="col-sm-8">
-                @Model.Amount.ToString("C") <!-- Formatting amount as currency -->
-            </dd>
+                        <dt class="col-sm-4 fw-bold text-muted">@Html.DisplayNameFor(model => model.Amount)</dt>
+                        <dd class="col-sm-8">@Model.Amount.ToString("C")</dd>
 
-            <dt class="col-sm-4">
-                @Html.DisplayNameFor(model => model.PaymentDate)
-            </dt>
-            <dd class="col-sm-8">
-                @Model.PaymentDate.ToShortDateString() <!-- Formatting the date -->
-            </dd>
+                        <dt class="col-sm-4 fw-bold text-muted">@Html.DisplayNameFor(model => model.PaymentDate)</dt>
+                        <dd class="col-sm-8">@Model.PaymentDate.ToShortDateString()</dd>
 
-            <dt class="col-sm-4">
-                @Html.DisplayNameFor(model => model.BookingId)
-            </dt>
-            <dd class="col-sm-8">
-                @Html.DisplayFor(model => model.BookingId)
-            </dd>
+                        <dt class="col-sm-4 fw-bold text-muted">@Html.DisplayNameFor(model => model.BookingId)</dt>
+                        <dd class="col-sm-8">@Html.DisplayFor(model => model.BookingId)</dd>
 
-            <dt class="col-sm-4">
-                @Html.DisplayNameFor(model => model.PaymentStatus)
-            </dt>
-            <dd class="col-sm-8">
-                @Html.DisplayFor(model => model.PaymentStatus)
-            </dd>
+                        <dt class="col-sm-4 fw-bold text-muted">@Html.DisplayNameFor(model => model.PaymentStatus)</dt>
+                        <dd class="col-sm-8">@Html.DisplayFor(model => model.PaymentStatus)</dd>
 
-            <dt class="col-sm-4">
-                @Html.DisplayNameFor(model => model.AccountNumber)
-            </dt>
-            <dd class="col-sm-8">
-                @Html.DisplayFor(model => model.AccountNumber)
-            </dd>
+                        <dt class="col-sm-4 fw-bold text-muted">@Html.DisplayNameFor(model => model.UserId)</dt>
+                        <dd class="col-sm-8">@Html.DisplayFor(model => model.UserId)</dd>
+                    </dl>
 
-            <dt class="col-sm-4">
-                @Html.DisplayNameFor(model => model.ExpirationDate)
-            </dt>
-            <dd class="col-sm-8">
-                @Html.DisplayFor(model => model.ExpirationDate)
-            </dd>
-
-            <dt class="col-sm-4">
-                @Html.DisplayNameFor(model => model.CVV)
-            </dt>
-            <dd class="col-sm-8">
-                @Html.DisplayFor(model => model.CVV)
-            </dd>
-
-            <dt class="col-sm-4">
-                @Html.DisplayNameFor(model => model.UserId)
-            </dt>
-            <dd class="col-sm-8">
-                @Html.DisplayFor(model => model.UserId)
-            </dd>
-        </dl>
-    </div>
-</div>
-
-<div class="mt-3">
-    <div class="row">
-        <!-- Uncomment the Edit button if you allow users to edit details -->
-        @* <div class="col-6 col-md-3">
-        <a asp-action="Edit" asp-route-id="@Model.PaymentId" class="btn btn-warning form-control">Edit</a>
-        </div> *@
-        <div class="col-6 col-md-3">
-            <a asp-action="Index" class="btn btn-outline-primary border form-control">Back to List</a>
+                    <!-- Action buttons -->
+                    <div class="text-center mt-4">
+                        @* Uncomment if you want to add the edit option *@
+                        @* <a asp-action="Edit" asp-route-id="@Model.PaymentId" class="btn btn-warning mx-2">Edit</a> *@
+                        <a asp-action="Index" class="btn btn-outline-primary mx-2">Back to List</a>
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
 </div>

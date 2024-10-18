@@ -7,15 +7,16 @@
     <div class="overlay"></div> <!-- Overlay for dark navy color -->
     <!-- Card for payment creation -->
     <div class="card shadow border-0 mx-auto" style="width: 85%; border-radius: 10px; box-shadow: 0 4px 20px rgba(0, 0, 0, 0.5);">
-        <div class="card-header bg-secondary bg-gradient py-3 text-center">
-            <h2 class="text-white mb-0">Create Payment</h2>
+            <div class="card-header bg-info bg-gradient py-3">
+            <h2 class="text-white mb-0">Payment Gateway</h2>
         </div>
         <div class="card-body p-4">
-            <form asp-action="ProcessPayment" method="post">
+            <form asp-action="CreatePayment" method="post">
                 @* Hidden fields for BookingId and UserId *@
                 <input type="hidden" asp-for="BookingId" />
                 <input type="hidden" asp-for="UserId" />
                 <input type="hidden" asp-for="PaymentDate" />
+                <input type="hidden" asp-for="Amount" />
 
 @*                 <div class="form-floating py-2">
                     <input asp-for="Amount" class="form-control border-0 shadow" placeholder="Amount" />
@@ -38,7 +39,7 @@
                     <select asp-for="PaymentMethod" class="form-select border-0 shadow">
                         <option disabled selected>--Select Payment Method--</option>
                         <option value="CreditCard">Credit Card</option>
-                        <option value="BankTransfer">Bank Transfer</option>
+                        <option value="BankTransfer">EFT</option>
                     </select>
                     <label asp-for="PaymentMethod" class="ms-2">Payment Method</label>
                     <span asp-validation-for="PaymentMethod" class="text-danger"></span>
@@ -62,9 +63,6 @@
                 <div class="row pt-2">
                     <div class="col-6 col-md-3">
                         <button type="submit" class="btn btn-primary form-control">Create Payment</button>
-                    </div>
-                    <div class="col-6 col-md-3">
-                        <a asp-action="Index" class="btn btn-outline-secondary border form-control">Back to List</a>
                     </div>
                 </div>
             </form>

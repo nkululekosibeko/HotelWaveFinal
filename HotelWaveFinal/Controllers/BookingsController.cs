@@ -146,7 +146,7 @@ namespace HotelWaveFinal.Controllers
                 TempData["success"] = "Booking Created Successfully";
 
                 var BookingId = booking.BookingId;
-                return RedirectToAction("CreatePayment", "Payments", new { userId = userId, projectId = BookingId, amount = booking.TotalCost });
+                return RedirectToAction("CreatePayment", "Payments", new { userId = userId, BookingId = BookingId, amount = booking.TotalCost });
 
                 //return RedirectToAction("Details", new { id = booking.BookingId });
             }
